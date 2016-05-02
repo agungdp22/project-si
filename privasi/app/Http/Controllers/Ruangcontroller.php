@@ -18,7 +18,8 @@ class Ruangcontroller extends Controller
 {
 	public function ndelokruangan($id){
 		$data = DB::table('listbarang')->where('id_ruangan','=',$id)->get();
-		return View::make('lihatruangan')->with('ruangan',$data);
+		$ruang = Input::get('nama_ruang');
+		return View::make('lihatruangan')->with('ruangan',$data)->with('var','nama ruangan');
 	}
 
 	public function ngeditbarang($id){

@@ -33,7 +33,7 @@
 		@foreach ($ruangdramaga as $data)
 		<tr>
 			<td>{{ $no++ }}</td>
-			<td><a href="lihatruang/{{$data->id}}">{{ $data->nama_ruang }}</a></td>
+			<td>{{ $data->nama_ruang }}<a href="lihatruang/{{$data->id}}">&nbsp&nbsp&nbsp<span class="label label-success" align="right">Lihat</span></a></td>
 			<td>{{ $data->kode_ruang }}</td>
 			<td>{{ $data->wing }}</td>
 			<td>{{ $data->level }}</td>
@@ -44,7 +44,7 @@
 			<td><a href="formedit/{{ $data->id}}"><span class="btn btn-success">Edit</span></a> || <a onclick="return konfirmasi()" href="hapus/{{ $data->id}}"><span class="btn btn-danger">Hapus</span></a></td>
 
 			@else
-			<td><a href="#"><span class="label label-success">Kirim Notifikasi</span></a></td>
+			<td><a href="kirimnotif/{{ $data->id }}"><span class="label label-success">Kirim Notifikasi</span></a></td>
 			@endif
 		</tr>
 		@endforeach

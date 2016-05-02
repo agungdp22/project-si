@@ -13,7 +13,7 @@
 	<div class="panel-heading">
 	Ubah Data</div>
 	{!! Form::open(['url' => '/proseseditbrg']) !!}
-	{!! Form::hidden('id',$listbarang->id,['class'=>'form-control'])!!}
+	{!! Form::hidden('id',$barang->id,['class'=>'form-control'])!!}
     Nama Ruang:
     {!! Form::text('nama_ruang', $ruang_dramaga->nama_ruang, ['class' => 'form-control']) !!}
     Kode Ruang:

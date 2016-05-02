@@ -170,7 +170,7 @@
 								<li><a href="#">
 									<div class="user_img"><img src="images/2.png" alt=""></div>
 								   <div class="notification_desc">
-									<p>Lorem ipsum dolor amet</p>
+									<p>Barang dengan id xxx dilaporkan rusak</p>
 									<p><span>1 hour ago</span></p>
 									</div>
 								  <div class="clearfix"></div>	
@@ -196,7 +196,7 @@
 										<div class="clearfix"></div>	
 									</div>
 									<div class="progress progress-striped active">
-										<div class="bar yellow" style="width:40%;"></div>
+										<div class="bar yellow" style="width:90%;"></div>
 									</div>
 								</a></li>
 								<li>

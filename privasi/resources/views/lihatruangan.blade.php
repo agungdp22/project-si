@@ -17,10 +17,16 @@
 	@endif
 	<p></p>
 	<div class="table-responsive">
-	Nama Ruangan : <br>
-	Kode Ruangan : <br>
-	Gedung/Wing/Lantai : IPB Dramaga/20/5
-	<br><br>
+	<table border="0">
+		<tr>
+			<th>Nama Ruangan</th><th>&nbsp&nbsp:&nbsp&nbsp</th><th>{{Session::get('var')}}</th>
+		</tr><tr>
+			<th>Kode Ruangan</th><th>&nbsp&nbsp:&nbsp&nbsp</th><th>111dd1</th>
+		</tr><tr>
+			<th>Gedung/Wing/Lantai</th><th>&nbsp&nbsp:&nbsp&nbsp</th><th>IPB Dramaga/20/5</th>
+		</tr>
+	</table>
+	<br>
 	<table class="table table-bordered">
 		<tr align="center">
 			<th>No</th>
@@ -35,7 +41,8 @@
 			<th>Sumber Dana</th>
 			<th>Kondisi</th>
 		</tr>
-		<?php $no=1;?>
+		<?php $no=1;
+		$sum=0;?>
 		@foreach ($ruangan as $data)
 		<?php $ttl=($data->harga)*($data->jumlah);?>
 		<tr>
@@ -54,11 +61,13 @@
 			<td><a href="editbarang/{{ $data->id}}"><span class="btn btn-success">Edit....</span></a><a onclick="return konfirmasi()" href="hapus/{{ $data->id}}"><span class="btn btn-danger">Hapus</span></a></td>
 
 			@else
-			<td><a href="#"><span class="label label-success">Kirim Notifikasi</span></a></td>
+			<td><a href="kirimnotif/{{ $data->id }}"><span class="label label-success">Kirim Notifikasi</span></a></td>
 			@endif
 		</tr>
+		<?php $sum=$sum+$ttl;?>
 		@endforeach
 	</table>
+	Total Anggaran = Rp <?php echo $sum;?><br><br>
 		@if(Auth::user()->hak_akses=="admin")
 		<a href="{{ URL('inputdata') }}"><span class="btn btn-success">Tambah Data</span></a>
 		<a onclick="history.go(-1);"><span class="btn btn-danger">Kembali</span></a>
