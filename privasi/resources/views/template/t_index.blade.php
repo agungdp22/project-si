@@ -47,61 +47,58 @@
 							<a href="{{URL('/')}}"><i class="fa fa-home nav_icon"></i>Home</a>
 						</li>
 						<li>
-							<a href="#"><i class="fa fa-cogs nav_icon"></i>Components <!--<span class="nav-badge">12</span> --><span class="fa arrow"></span></a>
-							<ul class="nav nav-second-level collapse">
+							<a href="#"><i class="fa fa-cogs nav_icon"></i>Components <!-- <span class="nav-badge">12</span> <span class="fa arrow"></span> --></a>
+							<!-- <ul class="nav nav-second-level collapse">
 								<li>
 									<a href="grids.html">Grid System</a>
 								</li>
 								<li>
 									<a href="media.html">Media Objects</a>
 								</li>
-							</ul>
+							</ul> -->
 						</li>
-						<li class="">
-							<a href="#"><i class="fa fa-book nav_icon"></i>UI Elements <span class="fa arrow"></span></a>
+						<!-- <li class="">
+							<a href="#"><i class="fa fa-book nav_icon"></i>UI Elements</a>
 							<ul class="nav nav-second-level collapse">
 								<li>
-									<a href="general.html">General<!--<span class="nav-badge-btm">08</span>--></a>
+									<a href="general.html">General<span class="nav-badge-btm">08</span></a>
 								</li>
 								<li>
 									<a href="typography.html">Typography</a>
 								</li>
 							</ul>
+						</li> -->
+						<li>
+							<a href="{{URL('/read')}}"><i class="fa fa-th-large nav_icon"></i>Lihat Ruangan <!--<span class="nav-badge-btm">08</span>--></a>
 						</li>
 						<li>
-							<a href="{{URL('/read')}}"><i class="fa fa-th-large nav_icon"></i>Lihat Data <!--<span class="nav-badge-btm">08</span>--></a>
-						</li>
-						<li>
-							<a href="#"><i class="fa fa-envelope nav_icon"></i>Mailbox<span class="fa arrow"></span></a>
-							<ul class="nav nav-second-level collapse">
+							<a href="#"><i class="fa fa-envelope nav_icon"></i>Mailbox<!-- <span class="fa arrow"></span> --></a>
+							<!-- <ul class="nav nav-second-level collapse">
 								<li>
 									<a href="inbox.html">Inbox <span class="nav-badge-btm">05</span></a>
 								</li>
 								<li>
 									<a href="compose.html">Compose email</a>
 								</li>
-							</ul>
+							</ul> -->
 						</li>
 						<li>
 							<a href="tables.html"><i class="fa fa-table nav_icon"></i>Lihat Tempat <!--<span class="nav-badge">05</span>--></a>
 						</li>
 						<li>
-							<a href="#"><i class="fa fa-check-square-o nav_icon"></i>Forms<span class="fa arrow"></span></a>
-							<ul class="nav nav-second-level collapse">
+							<a href="#"><i class="fa fa-check-square-o nav_icon"></i>Forms<!-- <span class="fa arrow"></span> --></a>
+							<!-- <ul class="nav nav-second-level collapse">
 								<li>
-									<a href="forms.html">Basic Forms <!--<span class="nav-badge-btm">07</span>--></a>
+									<a href="forms.html">Basic Forms <span class="nav-badge-btm">07</span></a>
 								</li>
 								<li>
 									<a href="validation.html">Validation</a>
 								</li>
-							</ul>
+							</ul> -->
 						</li>
 						@if(Auth::user()->hak_akses=="admin")
 						<li>
-							<a href="tambahstaff"><i class="fa fa-file-text-o nav_icon"></i>Tambah Staff<!--<span class="nav-badge-btm">02</span><span class="fa arrow"></span>--></a>
-						</li>
-						<li>
-							<a href="charts.html" class="chart-nav"><i class="fa fa-bar-chart nav_icon"></i>Charts <!--<span class="nav-badge-btm pull-right">new</span>--></a>
+							<a href="{{URL('tambahstaff')}}"><i class="fa fa-file-text-o nav_icon"></i>Tambah Staff<!--<span class="nav-badge-btm">02</span><span class="fa arrow"></span>--></a>
 						</li>
 						@endif
 					</ul>

@@ -3,7 +3,7 @@
 @section('content')
 <div id="page-wrapper">
 	<div class="main-page">
-        <div class="title">Hei Welcome Back Admin</div>
+        <div class="title">Hei Selamat Datang Kembali Admin</div>
         <br/>
 <div class="cal1">
 						

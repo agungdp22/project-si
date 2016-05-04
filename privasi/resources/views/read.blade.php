@@ -50,7 +50,7 @@
 		@endforeach
 	</table>
 		@if(Auth::user()->hak_akses=="admin")
-		<a href="{{ URL('inputdata') }}"><span class="btn btn-danger">Tambah Data</span></a>
+		<a href="{{ URL('inputdata') }}"><span class="btn btn-success">Tambah Data</span></a>
 		@endif
 @endif
 </div>

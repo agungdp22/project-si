@@ -8,7 +8,12 @@
 	 else return false;
 	 }
  </script>
-
+<?php
+	function format_rupiah($angka){
+	 $rupiah=number_format($angka,0,',','.');
+	 return $rupiah;
+	}
+?>
 @if(Auth::user())
 <div id="page-wrapper">
 	<div class="main-page">
@@ -17,15 +22,17 @@
 	@endif
 	<p></p>
 	<div class="table-responsive">
+	@foreach($namaruang as $ruang)
 	<table border="0">
 		<tr>
-			<th>Nama Ruangan</th><th>&nbsp&nbsp:&nbsp&nbsp</th><th>{{Session::get('var')}}</th>
+			<th>Nama Ruangan</th><th>&nbsp&nbsp:&nbsp&nbsp</th><th>{{$ruang->nama_ruang}} @if($ruang->keterangan) ({{$ruang->keterangan}}) @endif</th>
 		</tr><tr>
-			<th>Kode Ruangan</th><th>&nbsp&nbsp:&nbsp&nbsp</th><th>111dd1</th>
+			<th>Kode Ruangan</th><th>&nbsp&nbsp:&nbsp&nbsp</th><th>{{$ruang->kode_ruang}}</th>
 		</tr><tr>
-			<th>Gedung/Wing/Lantai</th><th>&nbsp&nbsp:&nbsp&nbsp</th><th>IPB Dramaga/20/5</th>
+			<th>Wing/Level</th><th>&nbsp&nbsp:&nbsp&nbsp</th><th>{{$ruang->wing}}/{{$ruang->level}}</th>
 		</tr>
 	</table>
+	@endforeach
 	<br>
 	<table class="table table-bordered">
 		<tr align="center">
@@ -34,15 +41,16 @@
 			<th>Nama Barang</th>
 			<th>Merk</th>
 			<th>Tahun Perolehan</th>
-			<th>Harga</th>
+			<th>Harga (Rupiah)</th>
 			<th>Jumlah</th>
 			<th>Satuan</th>
-			<th>Total</th>
+			<th>Total (Rupiah)</th>
 			<th>Sumber Dana</th>
 			<th>Kondisi</th>
 		</tr>
 		<?php $no=1;
 		$sum=0;?>
+		@if($ruangan)
 		@foreach ($ruangan as $data)
 		<?php $ttl=($data->harga)*($data->jumlah);?>
 		<tr>
@@ -51,10 +59,10 @@
 			<td>{{ $data->nama_barang }}</td>
 			<td>{{ $data->merk }}</td>
 			<td>{{ $data->tahun_perolehan }}</td>
-			<td>{{ $data->harga }}</td>
+			<td>{{ format_rupiah($data->harga) }}</td>
 			<td>{{ $data->jumlah }}</td>
 			<td>{{ $data->satuan }}</td>
-			<td>{{ $ttl }}</td>
+			<td>{{ format_rupiah($ttl) }}</td>
 			<td>{{ $data->sumber_dana }}</td>
 			<td>{{ $data->kondisi}}</td>
 			@if(Auth::user()->hak_akses=="admin")
@@ -66,8 +74,11 @@
 		</tr>
 		<?php $sum=$sum+$ttl;?>
 		@endforeach
+		@else
+		<tr><td colspan="11" align="center"><span class="label label-danger">TIDAK ADA DATA</span></td></tr>
+		@endif
 	</table>
-	Total Anggaran = Rp <?php echo $sum;?><br><br>
+	Total Anggaran = Rp <?php echo format_rupiah($sum);?><br><br>
 		@if(Auth::user()->hak_akses=="admin")
 		<a href="{{ URL('inputdata') }}"><span class="btn btn-success">Tambah Data</span></a>
 		<a onclick="history.go(-1);"><span class="btn btn-danger">Kembali</span></a>

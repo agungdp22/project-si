@@ -18,8 +18,8 @@ class Ruangcontroller extends Controller
 {
 	public function ndelokruangan($id){
 		$data = DB::table('listbarang')->where('id_ruangan','=',$id)->get();
-		$ruang = Input::get('nama_ruang');
-		return View::make('lihatruangan')->with('ruangan',$data)->with('var','nama ruangan');
+		$ruang = DB::table('ruang_dramaga')->where('id','=',$id)->get();
+		return View::make('lihatruangan')->with('ruangan',$data)->with('namaruang',$ruang);
 	}
 
 	public function ngeditbarang($id){
@@ -29,13 +29,15 @@ class Ruangcontroller extends Controller
 
 	public function prosesngeditbarang(){
 		$data = array(
-			'nama_ruang'=>Input::get('nama_ruang'),
-			'kode_ruang'=>Input::get('kode_ruang'),
-			'wing'=>Input::get('wing'),
-			'level'=>Input::get('level'),
-			'ukuran_panjang'=>Input::get('ukuran_panjang'),
-			'ukuran_lebar'=>Input::get('ukuran_lebar'),
-			'luas'=>Input::get('luas')
+			'kode_barang'=>Input::get('kode_barang'),
+			'nama_barang'=>Input::get('nama_barang'),
+			'merk'=>Input::get('merk'),
+			'tahun_perolehan'=>Input::get('tahun_perolehan'),
+			'harga'=>Input::get('harga'),
+			'jumlah'=>Input::get('jumlah'),
+			'satuan'=>Input::get('satuan'),
+			'sumber_dana'=>Input::get('sumber_dana'),
+			'kondisi'=>Input::get('kondisi')
 			);
 		DB::table('listbarang')->where('id','=',Input::get('id'))->update($data);
 		return Redirect::to('lihatruangan')->with('message','Berhasil Mengedit Data');

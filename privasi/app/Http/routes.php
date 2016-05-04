@@ -93,9 +93,9 @@ Route::get('user',function(){
 });
 Route::get('search','Caricontroller@search');
 
-// modul crud barang inventaris
+//modul crud barang inventaris
 Route::get('lihatruang/{id}','Ruangcontroller@ndelokruangan');
-Route::get('editbarang/{id}','Ruangcontroller@ngeditbarang');
+Route::get('lihatruang/editbarang/{id}','Ruangcontroller@ngeditbarang');
 Route::post('proseseditbrg','Ruangcontroller@prosesngeditbarang');
 //end modul
 
