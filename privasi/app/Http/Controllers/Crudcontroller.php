@@ -27,6 +27,7 @@ class Crudcontroller extends Controller
 	}
 
 	public function lihatdata(){
+		//$data = Ruangan::orderby('id')->get();
 		$data = DB::table('ruang_dramaga')->get();
 		return View::make('read')->with('ruangdramaga',$data);
 	}
@@ -64,7 +65,7 @@ class Crudcontroller extends Controller
 			'hak_akses'=>'user'
 			);
 		DB::table('login')->insert($data);
-		return Redirect::to('/login')->with('message','Berhasil Mendaftar');
+		return Redirect::to('/staff')->with('message','Berhasil Mendaftar');
 	}
 
 	public function login(validasilogin $validasi)
@@ -83,6 +84,11 @@ class Crudcontroller extends Controller
 		else{
 			return Redirect::to('login')->with('message','Maaf, Anda Tidak Terdaftar');
 		}
+	}
+
+	public function lihatstaff(){
+		$data = DB::table('login')->where('hak_akses','=','user')->get();
+		return View::make('staff')->with('lihatstaff',$data);
 	}
 
 	public function logout(){

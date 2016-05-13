@@ -5,9 +5,9 @@
 	<div class="main-page">
         <div class="title">Hei Selamat Datang Kembali Admin</div>
         <br/>
-<div class="cal1">
+<!-- <div class="cal1">
 						
-					</div>
+</div> -->
     </div>
 @stop
 

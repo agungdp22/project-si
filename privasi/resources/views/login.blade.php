@@ -1,4 +1,8 @@
 @extends('template/t_index')
+@section('title')
+	Login
+@endsection
+
 <style type="text/css">
 	body { background: url(assets/janux/img/bg-login.jpg) !important; }
 </style>

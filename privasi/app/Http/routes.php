@@ -58,6 +58,21 @@ Route::get('login',function(){
 	}
 });
 Route::post('prosesedit','Crudcontroller@proseseditdata');
+Route::get('staff', function () {
+    //return view('register');
+    if(Auth::user()){
+		if(Auth::user()->hak_akses=="admin"){
+			return view('staff');
+		}
+		else{
+			return Redirect::to('errorpage')->with('message','Halaman Tidak Ditemukan');
+		}
+	}
+	else{
+		return view('login');
+	}
+});
+Route::get('staff','Crudcontroller@lihatstaff');
 Route::get('tambahstaff', function () {
     //return view('register');
     if(Auth::user()){
@@ -97,6 +112,8 @@ Route::get('search','Caricontroller@search');
 Route::get('lihatruang/{id}','Ruangcontroller@ndelokruangan');
 Route::get('lihatruang/editbarang/{id}','Ruangcontroller@ngeditbarang');
 Route::post('proseseditbrg','Ruangcontroller@prosesngeditbarang');
+Route::post('prosestambahbarang','Ruangcontroller@tambahbarang');
+Route::get('hapusbarang/{id}','Ruangcontroller@hapusbarang');
 //end modul
 
 Route::get('logout','Crudcontroller@logout');

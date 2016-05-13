@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-	<title>Inventaris Departemen Ilmu Komputer</title>
+	<title>@yield('title')</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="keywords" content="Novus Admin Panel Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template, 
@@ -39,7 +39,7 @@
 
 @if(Auth::user())
 	<div class="main-content">
-			<div class=" sidebar" role="navigation">
+			<div class="sidebar" role="navigation">
             <div class="navbar-collapse">
 				<nav class="cbp-spmenu cbp-spmenu-vertical cbp-spmenu-left" id="cbp-spmenu-s1">
 					<ul class="nav" id="side-menu">
@@ -98,7 +98,7 @@
 						</li>
 						@if(Auth::user()->hak_akses=="admin")
 						<li>
-							<a href="{{URL('tambahstaff')}}"><i class="fa fa-file-text-o nav_icon"></i>Tambah Staff<!--<span class="nav-badge-btm">02</span><span class="fa arrow"></span>--></a>
+							<a href="{{URL('staff')}}"><i class="fa fa-file-text-o nav_icon"></i>Lihat Staff<!--<span class="nav-badge-btm">02</span><span class="fa arrow"></span>--></a>
 						</li>
 						@endif
 					</ul>
@@ -271,4 +271,8 @@
    	<script src="{{URL('assets/template/js/bootstrap.js')}}"> </script>
 	
 </body>
+@yield('modalTambah')
+@yield('modal')
+@yield('modalEdit')
+@yield('hapus')
 </html>

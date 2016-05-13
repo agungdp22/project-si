@@ -1,6 +1,9 @@
 @extends('template/t_index')
-@section('content')
+@section('title')
+    Edit
+@endsection
 
+@section('content')
 @if(Auth::user())
 
 <div id="page-wrapper">

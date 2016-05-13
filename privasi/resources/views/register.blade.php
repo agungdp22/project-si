@@ -1,4 +1,9 @@
 @extends('template/t_index')
+
+@section('title')
+	Tambah Staff
+@endsection
+
 @section('content')
 
 <div id="page-wrapper">
