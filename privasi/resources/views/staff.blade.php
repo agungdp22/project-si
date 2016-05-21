@@ -21,6 +21,8 @@
 			<th>Nama Staff</th>
 			<th>Email</th>
 			<th>Username</th>
+      <th>Wilayah Operasional</th>
+      <th>Action</th>
 		</tr>
 		<?php $no=1;?>
 		@foreach($lihatstaff as $data)
@@ -29,6 +31,8 @@
 			<td>{{$data->namalengkap}}</td>
 			<td>{{$data->email}}</td>
 			<td>{{$data->username}}</td>
+      <td>Dramaga</td>
+      <td><a href="" data-placement="top" data-toggle="modal" data-target="#delete{{$data->id}}" type="button" data-original-title="Delete" class="btn  btn-sm tooltips"><span class="btn btn-danger">Hapus</span></a></td>
 		</tr>
 		@endforeach
 		
@@ -75,4 +79,26 @@
       </div>
     </div>
     </div>
+@endsection
+
+@section('hapus')
+@foreach($lihatstaff as $data)
+  <div class="modal fade fadeIn delete" id="delete{{$data->id}}" tabindex="-1" role="dialog" aria-labelledby="deleteLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="deleteLabel">Hapus Data</h4>
+        </div>
+        <div class="modal-body">
+          <h4>Apakah anda yakin untuk menghapus data staff {{$data->namalengkap}} ?</h4>
+        </div>
+        <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Tidak</button>
+        <a href="{{ url('hapusstaff',$data->id) }}" type="submit" class="btn btn-danger" name="submit" class="form-control" value="Submit">Iya</a>
+        </div>
+      </div>
+    </div>
+  </div>
+@endforeach
 @endsection

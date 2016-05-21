@@ -19,6 +19,9 @@
 	@if(Session::has('message'))
 	<span class="label label-success">{{ Session::get('message') }}</span>
 	@endif
+  @if(Auth::user()->hak_akses=="admin")
+   <p align="right"> <a href="" data-placement="top" data-toggle="modal" data-target="#modalTambah" type="button" data-original-title="Edit" class="btn  btn-sm"><span class="btn btn-success">Tambah Data</span></a></p>
+  @endif
 	<p></p>
 	<div class="table-responsive">
 	<table class="table table-bordered">
@@ -37,7 +40,7 @@
 		@foreach ($ruangdramaga as $data)
 		<tr>
 			<td>{{ $no++ }}</td>
-			<td>{{ $data->nama_ruang }}&nbsp&nbsp&nbsp<a href="lihatruang/{{$data->id}}"><span class="label label-success" align="right">Lihat</span></a></td>
+			<td>{{ $data->nama_ruang }}&nbsp&nbsp&nbsp<a href="lihatruang/{{$data->id}}"><p align="right"><span class="label label-success">Lihat</span></p></a></td>
 			<td>{{ $data->kode_ruang }}</td>
 			<td>{{ $data->wing }}</td>
 			<td>{{ $data->level }}</td>
@@ -46,25 +49,95 @@
 			<td>{{ $data->luas }}</td>
 			@if(Auth::user()->hak_akses=="admin")
 			<td>
-				<a href="" data-placement="top" data-toggle="modal" data-target="#edit{{$data->id}}" type="button" data-original-title="Edit" class="btn  btn-sm"><i class="fa fa-pencil">&nbsp</i>Edit....</a><br>
-        <a href="" data-placement="top" data-toggle="modal" data-target="#delete{{$data->id}}" type="button" data-original-title="Delete" class="btn  btn-sm tooltips"><i class="fa fa-trash-o">&nbsp</i>Hapus</a>
+				<a href="" data-placement="top" data-toggle="modal" data-target="#edit{{$data->id}}" type="button" data-original-title="Edit" class="btn btn-sm"><i class="fa fa-pencil">&nbsp</i>Edit....</a><br>
+        <a href="" data-placement="top" data-toggle="modal" data-target="#delete{{$data->id}}" type="button" data-original-title="Delete" class="btn btn-sm tooltips"><i class="fa fa-trash-o">&nbsp</i>Hapus</a>
 			</td>
 
 			@else
-			<td><a href="kirimnotif/{{ $data->id }}"><span class="label label-success">Kirim Notifikasi</span></a></td>
+			<td><a href="" data-placement="top" data-toggle="modal" data-target="#notif{{$data->id}}" type="button" data-original-title="Notifikasi" class="btn btn-sm"><div class="btn btn-success">Kirim Notifikasi</div></a></td>
 			@endif
 		</tr>
 		@endforeach
 	</table>
-		@if(Auth::user()->hak_akses=="admin")
-		<a href="{{ URL('inputdata') }}"><span class="btn btn-success">Tambah Data</span></a>
-		@endif
+		  
 @endif
 </div>
 </div>
 @endsection
 
+@section('modalTambah')
+    <div class="modal fade fadeIn edit" id="modalTambah" tabindex="-1" role="dialog" aria-labelledby="editLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="hasilLabel">Tambah Ruangan</h4>
+        </div>
+        <div class="modal-body">
+        <div class="clearfix"></div>
+        {!! Form::open(array('url'=>'/prosestambahruangan', 'role'=>'form', 'class="form-horizontal form-label-left"')) !!}
+            <div class="form-group">
+            <label class="col-md-2 control-label" align="right">Nama Ruangan Baru</label>
+            <div class="col-md-6">
+              <input type="text" name="nama_ruang" class="form-control">
+            </div>
+            </div>
+          <div class="clearfix"></div>
+          <div class="form-group">
+            <label class="col-md-2 control-label" align="right">Kode Ruangan</label>
+            <div class="col-md-6">
+              <input type="text" name="kode_ruang" class="form-control">
+            </div>
+          </div>
+          <div class="clearfix"></div>
+          <div class="form-group">
+            <label class="col-md-2 control-label" align="right">Wing</label>
+            <div class="col-md-6">
+              <input type="numeric" name="wing" class="form-control">
+            </div>
+          </div>
+            <div class="clearfix"></div>
+            <div class="form-group">
+                <label class="col-md-2 control-label" align="right">Level</label>
+                <div class="col-md-6">
+                    <input type="text" name="level" class="form-control">
+                </div>
+            </div>
+          <div class="clearfix"></div>
+          <div class="form-group">
+                <label class="col-md-2 control-label" align="right">Panjang</label>
+                <div class="col-md-6">
+                    <input type="text" name="panjang" class="form-control">
+                </div>
+            </div>
+          <div class="clearfix"></div>
+          <div class="form-group">
+                <label class="col-md-2 control-label" align="right">Lebar</label>
+                <div class="col-md-6">
+                    <input type="text" name="lebar" class="form-control">
+                </div>
+            </div>
+          <div class="clearfix"></div>
+          <div class="form-group">
+                <label class="col-md-2 control-label" align="right">Keterangan</label>
+                <div class="col-md-6">
+                    <input type="text" name="keterangan" class="form-control">
+                </div>
+            </div>
+          <div class="clearfix"></div>
 
+            
+        </div>
+        <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Batalkan</button>
+        <button type="submit" class="btn btn-success" name="submit" class="form-control" value="Submit">Tambah Data</button>
+        </div>
+        {!! Form::close() !!}
+        </div>
+      </div>
+    </div>
+    </div>
+@endsection
 
 @section('modalEdit')
   @foreach($ruangdramaga as $data)
@@ -79,9 +152,9 @@
         <div class="clearfix"></div>
         {!! Form::open(['url' => '/prosesedit']) !!}
 		{!! Form::hidden('id',$data->id,['class'=>'form-control'])!!}
-	    Nama Ruang:
+	    Nama Ruangan:
 	    {!! Form::text('nama_ruang', $data->nama_ruang, ['class' => 'form-control']) !!}
-	    Kode Ruang:
+	    Kode Ruangan:
 	    {!! Form::text('kode_ruang', $data->kode_ruang, ['class' => 'form-control']) !!}
 	    Wing:
 	    {!! Form::text('wing', $data->wing, ['class' => 'form-control']) !!}
@@ -120,11 +193,69 @@
         </div>
         <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Tidak</button>
-        <a href="{{ url('hapus/$data->id') }}" type="submit" class="btn btn-primary" name="submit" class="form-control" value="Submit">Iya</a>
+        <a href="{{URL('hapusruangan',$data->id)}}" type="submit" class="btn btn-primary" name="submit" class="form-control" value="Submit">Iya</a>
         </div>
       </div>
     </div>
   </div>
 @endforeach
+@endsection
+
+@section('modalNotif')
+@foreach($ruangdramaga as $data)
+<div class="modal fade fadeIn edit" id="notif{{$data->id}}" tabindex="-1" role="dialog" aria-labelledby="editLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="hasilLabel">Kirim Notifikasi ke Admin untuk Ruangan {{$data->nama_ruang}} </h4>
+        </div>
+        <div class="modal-body">
+        <div class="clearfix"></div>
+        {!! Form::open(array('url'=>'/prosesnotifikasiruangan', 'role'=>'form', 'class="form-horizontal form-label-left"')) !!}
+        <input type="hidden" name="ruangan" value="{{$data->nama_ruang}}" class="form-control">
+        <input type="hidden" name="pengirim" value="{{Auth::user()->namalengkap}}" class="form-control">
+        <input type="hidden" name="id_pengirim" value="{{Auth::user()->id}}" class="form-control">
+            <!-- <div class="form-group">
+            <label class="col-md-2 control-label" align="right">Kondisi</label>
+            <div class="col-md-6">
+              <input type="text" name="kondisi" class="form-control">
+            </div>
+            </div>
+          <div class="clearfix"></div> -->
+          <div class="form-group">
+            <label class="col-md-2 control-label" align="right">Komentar</label>
+            <div class="col-md-6">
+              <textarea name="komentar" class="form-control"></textarea>
+            </div>
+          </div>
+          <div class="clearfix"></div>
+         <!--  <div class="form-group">
+            <label class="col-md-2 control-label" align="right">Merk</label>
+            <div class="col-md-6">
+              <input type="text" name="merk" class="form-control">
+            </div>
+          </div>
+            <div class="clearfix"></div>
+            <div class="form-group">
+                <label class="col-md-2 control-label" align="right">Tahun Perolehan</label>
+                <div class="col-md-6">
+                    <input type="text" name="tahun_perolehan" class="form-control">
+                </div>
+            </div>
+          <div class="clearfix"></div> -->
+
+            
+        </div>
+        <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Batalkan</button>
+        <button type="submit" class="btn btn-success" name="submit" class="form-control" value="Submit">Kirim</button>
+        </div>
+        {!! Form::close() !!}
+        </div>
+      </div>
+    </div>
+    </div>
+    @endforeach
 @endsection
 

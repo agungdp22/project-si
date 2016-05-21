@@ -27,6 +27,22 @@ class Ruangcontroller extends Controller
 		return View::make('edit_barang')->with('barang',$data);
 	}
 
+	public function prosestambahruangan(){
+		$luas = (Input::get('panjang'))*(Input::get('lebar'));
+		$data = array(
+			'nama_ruang' => Input::get('nama_ruang'),
+			'kode_ruang' => Input::get('kode_ruang'),
+			'wing' => Input::get('wing'),
+			'level' => Input::get('level'),
+			'ukuran_panjang' => Input::get('panjang'),
+			'ukuran_lebar' => Input::get('lebar'),
+			'luas' => $luas,
+			'keterangan' => Input::get('keterangan')
+			);
+		DB::table('ruang_dramaga')->insert($data);
+		return Redirect::to('read')->with('message','Berhasil Tambah Data');
+	}
+
 	public function prosesngeditbarang(){
 		$data = array(
 			'kode_barang'=>Input::get('kode_barang'),
@@ -40,7 +56,7 @@ class Ruangcontroller extends Controller
 			'kondisi'=>Input::get('kondisi')
 			);
 		DB::table('listbarang')->where('id','=',Input::get('id'))->update($data);
-		return Redirect::to('read')->with('message','Berhasil Mengedit Data');
+		return back()->with('message','Berhasil Mengedit Data');
 	}
 
 	public function tambahbarang(){
@@ -58,11 +74,27 @@ class Ruangcontroller extends Controller
 			'kondisi'=>Input::get('kondisi')
 			);
 		DB::table('listbarang')->insert($data);
-		return Redirect::to('/lihatruang/1')->with('message','Berhasil Menambah Data Barang');
+		return back()->with('message','Berhasil Menambah Data Barang');
+	}
+
+	public function hapusruangan($id){
+		DB::table('ruang_dramaga')->where('id','=',$id)->delete();
+		return Redirect::to('/read')->with('message','Berhasil Menghapus Data');
 	}
 
 	public function hapusbarang($id){
 		DB::table('listbarang')->where('id','=',$id)->delete();
-		return Redirect::to('/lihatruang/1')->with('message','Berhasil Menghapus Data');
+		return back()->with('message','Berhasil Menghapus Data');
 	}
+
+	public function barangthdtempat(){
+		$data = DB::table('ruang_dramaga')->get();
+		return View::make('lihatbarang')->with('ruang',$data);
+	}
+
+	public function lihatpakeajax($id){
+		$data = DB::table('listbarang')->where('id_ruangan','=',$id)->get();
+		return View::make('ruanganajax')->with('ruangan',$data);
+	}
+
 }

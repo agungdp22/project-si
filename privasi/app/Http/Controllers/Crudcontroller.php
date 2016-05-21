@@ -95,4 +95,9 @@ class Crudcontroller extends Controller
 		Auth::logout();
 		return Redirect::to('login')->with('message','Berhasil Logout');
 	}
+
+	public function hapusstaff($id){
+		DB::table('login')->where('id','=',$id)->delete();
+		return back()->with('message','Berhasil Menghapus Data');
+	}
 }

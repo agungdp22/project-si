@@ -21,9 +21,9 @@
 @if(Auth::user())
 <div id="page-wrapper">
 	<div class="main-page">
-	@if(Session::has('message'))
+	<!-- @if(Session::has('message'))
 	<span class="label label-success">{{ Session::get('message') }}</span>
-	@endif
+	@endif -->
 	<p></p>
 	<div class="table-responsive">
 	@foreach($namaruang as $ruang)
@@ -36,11 +36,9 @@
 				<th>Wing/Level</th><th>&nbsp&nbsp:&nbsp&nbsp</th><th>{{$ruang->wing}}/{{$ruang->level}}</th>
 			</tr>
 		</table>
-		@if(Auth::user()->hak_akses=="admin")
 		<p align="left"><a onclick="history.go(-1);"><span class="btn btn-danger">Kembali</span></a>
 		<p align="right"><a href="" data-placement="top" data-toggle="modal" data-target="#modalTambah" type="button" data-original-title="Edit" class="btn  btn-sm"><span class="btn btn-success">Tambah Data</span></a></p></p>
 			
-		@endif
 		<?php $nama_ruangan = ($ruang->nama_ruang); 
 			$id_ruang = ($ruang->id); ?>
 	@endforeach
@@ -51,10 +49,14 @@
 			<th>Nama Barang</th>
 			<th>Merk</th>
 			<th>Tahun Perolehan</th>
+      @if(Auth::user()->hak_akses=="admin")
 			<th>Harga (Rupiah)</th>
+      @endif
 			<th>Jumlah</th>
 			<th>Satuan</th>
+      @if(Auth::user()->hak_akses=="admin")
 			<th>Total (Rupiah)</th>
+      @endif
 			<th>Sumber Dana</th>
 			<th>Kondisi</th>
 			<th>Action</th>
@@ -70,28 +72,39 @@
 			<td>{{ $data->nama_barang }}</td>
 			<td>{{ $data->merk }}</td>
 			<td>{{ $data->tahun_perolehan }}</td>
+      @if(Auth::user()->hak_akses=="admin")
 			<td>{{ format_rupiah($data->harga) }}</td>
+      @endif
 			<td>{{ $data->jumlah }}</td>
 			<td>{{ $data->satuan }}</td>
+      @if(Auth::user()->hak_akses=="admin")
 			<td>{{ format_rupiah($ttl) }}</td>
+      @endif
 			<td>{{ $data->sumber_dana }}</td>
-			<td>{{ $data->kondisi}}</td>
+      <td>{{ $data->kondisi}}</td>
 			@if(Auth::user()->hak_akses=="admin")
+      
 			<td>			
 				<a href="" data-placement="top" data-toggle="modal" data-target="#editbarang{{$data->id}}" type="button" data-original-title="Edit" class="btn  btn-sm"><i class="fa fa-pencil">&nbsp</i>Edit....</a><br>
-        		<a href="" data-placement="top" data-toggle="modal" data-target="#delete{{$data->id}}" type="button" data-original-title="Delete" class="btn  btn-sm tooltips"><i class="fa fa-trash-o">&nbsp</i>Hapus</a>
+        <a href="" data-placement="top" data-toggle="modal" data-target="#delete{{$data->id}}" type="button" data-original-title="Delete" class="btn  btn-sm tooltips"><i class="fa fa-trash-o">&nbsp</i>Hapus</a>
         	</td>
 			@else
-			<td><a href="kirimnotif/{{ $data->id }}"><span class="label label-success">Kirim Notifikasi</span></a></td>
+			<td><a href="" data-placement="top" data-toggle="modal" data-target="#modalNotif" type="button" data-original-title="Notifikasi" class="btn  btn-sm"><span class="btn btn-success">Kirim Notifikasi</span></a></td>
 			@endif
 		</tr>
 		<?php $sum=$sum+$ttl;?>
 		@endforeach
 		@else
-		<tr><td colspan="11" align="center"><h3><span class="label label-danger">TIDAK ADA DATA</span></h3></td></tr>
+		  <tr><td colspan="11" align="center"><h3><span class="label label-danger">TIDAK ADA DATA</span></h3></td></tr>
 		@endif
 	</table>
-	Total Anggaran = Rp <?php echo format_rupiah($sum);?><br><br>
+  @if(Auth::user()->hak_akses=="admin")
+  @if($sum>10000000)
+	<span class="btn btn-danger">Total Anggaran = Rp <?php echo format_rupiah($sum);?></span><br><br>
+  @else
+  <span class="btn btn-success">Total Anggaran = Rp <?php echo format_rupiah($sum);?></span><br><br>
+  @endif
+  @endif
 		
 @endif
 </div>
@@ -105,7 +118,7 @@
         <div class="modal-content">
           <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title" id="hasilLabel">Tambah Data Inventaris Barang di Ruangan {{$ruang->nama_ruang}}</h4>
+          <h4 class="modal-title" id="hasilLabel">Tambah Data Barang Inventaris di Ruangan {{$ruang->nama_ruang}}</h4>
         </div>
         <div class="modal-body">
         <div class="clearfix"></div>
@@ -263,10 +276,65 @@
         </div>
         <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Tidak</button>
-        <a href="{{ url('hapusbarang/$data->id') }}" type="submit" class="btn btn-primary" name="submit" class="form-control" value="Submit">Iya</a>
+        <a href="{{ url('hapusbarang',$data->id) }}" type="submit" class="btn btn-danger" name="submit" class="form-control" value="Submit">Iya</a>
         </div>
       </div>
     </div>
   </div>
+@endforeach
+@endsection
+
+@section('modalNotif')
+@foreach($namaruang as $ruang)
+<div class="modal fade fadeIn edit" id="modalNotif" tabindex="-1" role="dialog" aria-labelledby="editLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="hasilLabel">Kirim Notifikasi ke Admin di Ruangan {{$ruang->nama_ruang}}</h4>
+        </div>
+        <div class="modal-body">
+        <div class="clearfix"></div>
+        {!! Form::open(array('url'=>'/prosesnotifikasi', 'role'=>'form', 'class="form-horizontal form-label-left"')) !!}
+            <div class="form-group">
+            <label class="col-md-2 control-label" align="right">Kondisi</label>
+            <div class="col-md-6">
+              <input type="text" name="kondisi" class="form-control">
+            </div>
+            </div>
+          <div class="clearfix"></div>
+          <div class="form-group">
+            <label class="col-md-2 control-label" align="right">Komentar</label>
+            <div class="col-md-6">
+              <input type="text" name="komentar" class="form-control">
+            </div>
+          </div>
+          <div class="clearfix"></div>
+          <div class="form-group">
+            <label class="col-md-2 control-label" align="right">Merk</label>
+            <div class="col-md-6">
+              <input type="text" name="merk" class="form-control">
+            </div>
+          </div>
+            <div class="clearfix"></div>
+            <div class="form-group">
+                <label class="col-md-2 control-label" align="right">Tahun Perolehan</label>
+                <div class="col-md-6">
+                    <input type="text" name="tahun_perolehan" class="form-control">
+                </div>
+            </div>
+          <div class="clearfix"></div>
+
+            
+        </div>
+        <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Batalkan</button>
+        <button type="submit" class="btn btn-success" name="submit" class="form-control" value="Submit">Kirim</button>
+        </div>
+        {!! Form::close() !!}
+        </div>
+      </div>
+    </div>
+    </div>
 @endforeach
 @endsection

@@ -109,11 +109,22 @@ Route::get('user',function(){
 Route::get('search','Caricontroller@search');
 
 //modul crud barang inventaris
+Route::get('lihatbarang','Ruangcontroller@barangthdtempat');
 Route::get('lihatruang/{id}','Ruangcontroller@ndelokruangan');
 Route::get('lihatruang/editbarang/{id}','Ruangcontroller@ngeditbarang');
 Route::post('proseseditbrg','Ruangcontroller@prosesngeditbarang');
+Route::post('prosestambahruangan', 'Ruangcontroller@prosestambahruangan');
 Route::post('prosestambahbarang','Ruangcontroller@tambahbarang');
 Route::get('hapusbarang/{id}','Ruangcontroller@hapusbarang');
-//end modul
+Route::get('hapusruangan/{id}','Ruangcontroller@hapusruangan');
+Route::get('lihatruangajax/{id}','Ruangcontroller@lihatpakeajax');
+//end modul barang
+
+Route::get('hapusstaff/{id}','Crudcontroller@hapusstaff');
+
+//Route::get('kirimnotif/ruangan/{id}','Notifikasicontroller@notifikasiruangan');
+Route::get('kirimnotif/barang/{id}','Notifikasicontroller@notifikasibarang');
+Route::post('prosesnotifikasiruangan','Notifikasicontroller@notifikasiruangan');
+Route::post('ajaxnotifikasi','Notifikasicontroller@ajaxnotifikasi');
 
 Route::get('logout','Crudcontroller@logout');

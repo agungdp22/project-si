@@ -28,11 +28,38 @@
 	<link rel="stylesheet" href="{{URL('assets/template/css/clndr.css')}}" type="text/css" />
 	<script src="{{URL('assets/template/js/underscore-min.js')}}" type="text/javascript"></script>
 	<script src= "{{URL('assets/template/js/moment-2.2.1.js')}}" type="text/javascript"></script>
-	<script src="{{URL('assets/template/js/clndr.js')}}" type="text/javascript"></script>
-	<script src="{{URL('assets/template/js/site.js')}}" type="text/javascript"></script>
+	
 	<script src="{{URL('assets/template/js/metisMenu.min.js')}}"></script>
 	<script src="{{URL('assets/template/js/custom.js')}}"></script>
 	<link href="{{URL('assets/template/css/custom.css')}}" rel="stylesheet">
+	
+	<?php $xxx=4;?>
+	<script type="text/javascript">
+	   function ambilKomentar(){
+	   $.ajax({
+	      type: "POST",
+	      url: "ajaxnotifikasi",
+	      dataType:'json',
+	      success: function(response){
+	       $("#jumlah").text(""+response+"");
+	       //document.getElementById("jumlah_notif").innerHTML=response;
+	       timer = setTimeout("ambilKomentar()",5000);
+	      }
+	     }); 
+	  }
+	  $(document).ready(function(){
+	   ambilKomentar();
+	  });
+
+	  window.onload = function()
+		{
+		   var hasil;
+		   hasil = <?php echo($xxx);?>;
+		   document.getElementById("jumlah_notif").innerHTML=hasil;
+		}
+	</script>
+
+
 </head> 
 
 <body class="cbp-spmenu-push">
@@ -47,15 +74,15 @@
 							<a href="{{URL('/')}}"><i class="fa fa-home nav_icon"></i>Home</a>
 						</li>
 						<li>
-							<a href="#"><i class="fa fa-cogs nav_icon"></i>Components <!-- <span class="nav-badge">12</span> <span class="fa arrow"></span> --></a>
-							<!-- <ul class="nav nav-second-level collapse">
+							<a href="#"><i class="fa fa-cogs nav_icon"></i>Components <!-- <span class="nav-badge">12</span> --> <span class="fa arrow"></span></a>
+							<ul class="nav nav-second-level collapse">
 								<li>
 									<a href="grids.html">Grid System</a>
 								</li>
 								<li>
 									<a href="media.html">Media Objects</a>
 								</li>
-							</ul> -->
+							</ul>
 						</li>
 						<!-- <li class="">
 							<a href="#"><i class="fa fa-book nav_icon"></i>UI Elements</a>
@@ -83,7 +110,7 @@
 							</ul> -->
 						</li>
 						<li>
-							<a href="tables.html"><i class="fa fa-table nav_icon"></i>Lihat Tempat <!--<span class="nav-badge">05</span>--></a>
+							<a href="{{URL('lihatbarang')}}"><i class="fa fa-table nav_icon"></i>Lihat Barang <!--<span class="nav-badge">05</span>--></a>
 						</li>
 						<li>
 							<a href="#"><i class="fa fa-check-square-o nav_icon"></i>Forms<!-- <span class="fa arrow"></span> --></a>
@@ -156,6 +183,8 @@
 								</li>
 							</ul>
 						</li>
+				
+						@if(Session::has('notifikasi'))
 						<li class="dropdown head-dpdn">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-bell"></i><span class="badge blue">3</span></a>
 							<ul class="dropdown-menu">
@@ -178,7 +207,27 @@
 									</div> 
 								</li>
 							</ul>
-						</li>	
+						</li>
+						@else
+						<li class="dropdown head-dpdn">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-bell"><span class="badge blue"><div id="jumlah_notif"></div></span></i></a>
+							<ul class="dropdown-menu">
+								<li>
+									<div class="notification_header">
+										<h3>No Notificationnnn</h3>
+									</div>
+								</li>
+								
+								 <li>
+									<div class="notification_bottom">
+										<a href="#">See all notifications</a>
+									</div> 
+								</li>
+							</ul>
+						</li>
+						@endif
+						
+						@if(Auth::user()->hak_akses=="admin")
 						<li class="dropdown head-dpdn">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-tasks"></i><span class="badge blue1">15</span></a>
 							<ul class="dropdown-menu">
@@ -202,7 +251,8 @@
 									</div> 
 								</li>
 							</ul>
-						</li>	
+						</li>
+						@endif	
 					</ul>
 					<div class="clearfix"> </div>
 				</div>
@@ -269,10 +319,13 @@
 	<script src="{{URL('assets/template/js/jquery.nicescroll.js')}}"></script>
 	<script src="{{URL('assets/template/js/scripts.js')}}"></script>
    	<script src="{{URL('assets/template/js/bootstrap.js')}}"> </script>
+
+   	@yield('tampilkandata')
 	
 </body>
 @yield('modalTambah')
 @yield('modal')
 @yield('modalEdit')
 @yield('hapus')
+@yield('modalNotif')
 </html>

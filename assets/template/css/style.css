@@ -91,7 +91,7 @@ button#showLeftPush:hover {
 	position: fixed;
 }
 .cbp-spmenu-vertical {
-    width: 220px;
+    width: 200px;
     height: 100%;
     top: 76px;
     z-index: 1000;
@@ -121,7 +121,7 @@ button#showLeftPush:hover {
 	transition: all 0.3s ease;
 }
 .cbp-spmenu-push div#page-wrapper {
-    margin: 0em 0 0 13.8em;
+    margin: 0em 0 0 12.6em;
 	transition:.5s all;
 	-webkit-transition:.5s all;
 	-moz-transition:.5s all;
@@ -2561,7 +2561,7 @@ i.fa.fa-facebook.profile-icon {
     margin: 0.5em 0 0 9.2em;
 }
 }
-@media(max-width:1366px){
+@media(max-width:1920px){
 .navbar-collapse.bs-example-js-navbar-scrollspy .nav > li > a {
     padding: 15px 11px;
 }
