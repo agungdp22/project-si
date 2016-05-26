@@ -25,6 +25,20 @@ Route::get('/', function () {
     	return view('login');
     }
 });
+Route::get('/home', function () {
+    //return view('home');
+    if(Auth::user()){
+    	if(Auth::user()->hak_akses=="admin"){
+    		return view('home');
+    	}
+    	else{
+    		return view('user');
+    	}
+    }
+    else{
+    	return view('login');
+    }
+});
 Route::get('inputdata', function () {
     //return view('inputdata');
     if(Auth::user()){
@@ -40,7 +54,8 @@ Route::get('inputdata', function () {
 	}
 });
 Route::post('prosestambah','Crudcontroller@tambahdata');
-Route::get('read','Crudcontroller@lihatdata');
+Route::get('ruangandramaga','Ruangcontroller@lihatdataruangandramaga');
+Route::get('ruanganbaranangsiang','Ruangcontroller@lihatdataruanganbaranangsiang');
 Route::get('hapus/{id}','Crudcontroller@hapusdata');
 Route::get('formedit/{id}','Crudcontroller@editdata');
 Route::get('login',function(){
@@ -87,9 +102,9 @@ Route::get('tambahstaff', function () {
 		return view('login');
 	}
 });
-Route::get('errorpage',function(){
-	return view('errorpage');
-});
+// Route::get('notifikasi',function(){
+// 	return view('notifikasi');
+// });
 Route::post('tambahlogin','Crudcontroller@tambahlogin');
 Route::post('login','Crudcontroller@login');
 Route::get('user',function(){
@@ -124,7 +139,10 @@ Route::get('hapusstaff/{id}','Crudcontroller@hapusstaff');
 
 //Route::get('kirimnotif/ruangan/{id}','Notifikasicontroller@notifikasiruangan');
 Route::get('kirimnotif/barang/{id}','Notifikasicontroller@notifikasibarang');
-Route::post('prosesnotifikasiruangan','Notifikasicontroller@notifikasiruangan');
-Route::post('ajaxnotifikasi','Notifikasicontroller@ajaxnotifikasi');
+Route::post('proseskirimpesan','Notifikasicontroller@ruanganpesan');
+Route::post('kirimpesandariadmin','Notifikasicontroller@ruanganpesan');
+Route::get('pesanmasuk','Notifikasicontroller@lihatsemuapesan');
+Route::get('pesankeluar','Notifikasicontroller@lihatsemuapesan');
+Route::get('hapuspesan/{id}','Notifikasicontroller@hapuspesan');
 
 Route::get('logout','Crudcontroller@logout');

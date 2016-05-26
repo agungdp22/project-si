@@ -16,20 +16,34 @@ use App\Http\Requests\validasitambahdata;
 
 class Notifikasicontroller extends Controller{
 
-	public function notifikasiruangan(){
+	public function ruanganpesan(){
 		$data = array(
-			'komentar' => Input::get('komentar'),
-			'ruangan' => Input::get('ruangan'),
-			'id_pengirim' => Input::get('id_pengirim'),
-			'pengirim' => Input::get('pengirim') 
+			'namaruangan' => Input::get('namaruangan'),
+			'namapengirim' => Input::get('namapengirim'),
+			'penerima' => Input::get('penerima'),
+			'lokasiruangan' => Input::get('lokasiruangan'),
+			'isipesan' => Input::get('isipesan'),
+			'tipe' => Input::get('tipe'),
+			'status' => Input::get('status')
 			);
-		DB::table('notif')->insert($data);
-		return Redirect::to('/read')->with('message','Berhasil Menambah Notifiksi');
+		DB::table('pesan')->insert($data);
+		return back()->with('message','Berhasil Mengirim Pesan');
 	}
 
-	public function ajaxnotifikasi(){
-		$array = DB::table('notif')->where('barang','=','baru')->get();
-		$num_rows = mysqli_num_rows($array);
-		return echo($array);
+	public function lihatsemuapesan(){
+		// $updatenotif = array('status' => 0);
+		$data = DB::table('pesan')->where('tipe','=','admin')->orderby('status','desc')->orderby('id','desc')->get();
+		$datauser = DB::table('pesan')->where('tipe','=','user')->where('penerima','=',Auth::user()->namalengkap)->orderby('status','desc')->orderby('id','desc')->get();
+		return View::make('pesan')->with('pesanadmin',$data)->with('pesanuser',$datauser);
+	}
+
+	public function deletepesan($id){
+		DB::table('pesan')->where('id','=',$id)->delete();
+		return back();
+	}
+
+	public function hapuspesan($id){
+		DB::table('pesan')->where('id','=',$id)->delete();
+		return back();
 	}
 }

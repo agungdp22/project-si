@@ -16,6 +16,18 @@ use App\Http\Requests\validasitambahdata;
 
 class Ruangcontroller extends Controller
 {
+	public function lihatdataruangandramaga(){
+		//$data = Ruangan::orderby('id')->get();
+		$data = DB::table('ruang_dramaga')->get();
+		return View::make('ruangandramaga')->with('ruangdramaga',$data);
+	}
+
+	public function lihatdataruanganbaranangsiang(){
+		//$data = Ruangan::orderby('id')->get();
+		$data = DB::table('ruang_baranang')->get();
+		return View::make('ruanganbaranangsiang')->with('ruangbaranangsiang',$data);
+	}
+
 	public function ndelokruangan($id){
 		$data = DB::table('listbarang')->where('id_ruangan','=',$id)->get();
 		$ruang = DB::table('ruang_dramaga')->where('id','=',$id)->get();

@@ -25,10 +25,10 @@
 	<p></p>
 	<p align="center"><label align="right">Untuk melihat barang, silahkan pilih ruangan untuk menampilkan barang sesuai ruangan</label></p>
 	<br>
-	<select class="form-control" id="" name="">
-        <option value="0">--Pilih Ruangan--</option>
+	<select class="form-control" id="" name="" onchange="document.location.href=this.options[this.selectedIndex].value;">
+        <option>--Pilih Ruangan--</option>
         @foreach($ruang as $pilihan)   
-        <option value="{{$pilihan->id}}" href="{{URL('lihatruang',$pilihan->id)}}">Ruang {{$pilihan->nama_ruang}}</option>
+        <option value="{{URL('lihatruang',$pilihan->id)}}" >Ruang {{$pilihan->nama_ruang}}</option>
         @endforeach
      </select>
 

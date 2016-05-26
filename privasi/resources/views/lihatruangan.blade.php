@@ -37,7 +37,7 @@
 			</tr>
 		</table>
 		<p align="left"><a onclick="history.go(-1);"><span class="btn btn-danger">Kembali</span></a>
-		<p align="right"><a href="" data-placement="top" data-toggle="modal" data-target="#modalTambah" type="button" data-original-title="Edit" class="btn  btn-sm"><span class="btn btn-success">Tambah Data</span></a></p></p>
+		<p align="right"><a href="" data-placement="top" data-toggle="modal" data-target="#modalTambah" type="button" data-original-title="Edit" class="btn  btn-sm"><span class="btn btn-success">+ | Tambah Data</span></a></p></p>
 			
 		<?php $nama_ruangan = ($ruang->nama_ruang); 
 			$id_ruang = ($ruang->id); ?>
@@ -89,7 +89,8 @@
         <a href="" data-placement="top" data-toggle="modal" data-target="#delete{{$data->id}}" type="button" data-original-title="Delete" class="btn  btn-sm tooltips"><i class="fa fa-trash-o">&nbsp</i>Hapus</a>
         	</td>
 			@else
-			<td><a href="" data-placement="top" data-toggle="modal" data-target="#modalNotif" type="button" data-original-title="Notifikasi" class="btn  btn-sm"><span class="btn btn-success">Kirim Notifikasi</span></a></td>
+			<td><!-- <a href="" data-placement="top" data-toggle="modal" data-target="#modalNotif" type="button" data-original-title="Notifikasi" class="btn  btn-sm"><span class="btn btn-success">Kirim Notifikasi</span></a> -->
+      <a href="" data-placement="top" data-toggle="modal" data-target="#editbarang{{$data->id}}" type="button" data-original-title="Edit" class="btn  btn-sm"><span class="btn btn-success">Edit..</span></a><br></td>
 			@endif
 		</tr>
 		<?php $sum=$sum+$ttl;?>
@@ -127,49 +128,49 @@
           <input type="hidden" name="nama_ruangan" class="form-control" value="{{$ruang->nama_ruang}}">
           @endforeach
             <div class="form-group">
-            <label class="col-md-2 control-label" align="right">Kode Barang</label>
+            <label class="col-md-4 control-label" align="right">Kode Barang</label>
             <div class="col-md-6">
               <input type="text" name="kode_barang" class="form-control">
             </div>
             </div>
           <div class="clearfix"></div>
           <div class="form-group">
-            <label class="col-md-2 control-label" align="right">Nama Barang</label>
+            <label class="col-md-4 control-label" align="right">Nama Barang</label>
             <div class="col-md-6">
               <input type="text" name="nama_barang" class="form-control">
             </div>
           </div>
           <div class="clearfix"></div>
           <div class="form-group">
-            <label class="col-md-2 control-label" align="right">Merk</label>
+            <label class="col-md-4 control-label" align="right">Merk</label>
             <div class="col-md-6">
               <input type="text" name="merk" class="form-control">
             </div>
           </div>
             <div class="clearfix"></div>
             <div class="form-group">
-                <label class="col-md-2 control-label" align="right">Tahun Perolehan</label>
+                <label class="col-md-4 control-label" align="right">Tahun Perolehan</label>
                 <div class="col-md-6">
-                    <input type="text" name="tahun_perolehan" class="form-control">
+                    <input type="number" name="tahun_perolehan" class="form-control">
                 </div>
             </div>
           <div class="clearfix"></div>
           <div class="form-group">
-                <label class="col-md-2 control-label" align="right">Harga</label>
+                <label class="col-md-4 control-label" align="right">Harga</label>
                 <div class="col-md-6">
-                    <input type="text" name="harga" class="form-control">
+                    <input type="number" name="harga" class="form-control">
                 </div>
             </div>
           <div class="clearfix"></div>
           <div class="form-group">
-                <label class="col-md-2 control-label" align="right">Jumlah</label>
+                <label class="col-md-4 control-label" align="right">Jumlah</label>
                 <div class="col-md-6">
-                    <input type="text" name="jumlah" class="form-control">
+                    <input type="number" name="jumlah" class="form-control">
                 </div>
             </div>
           <div class="clearfix"></div>
           <div class="form-group">
-                <label class="col-md-2 control-label" align="right">Satuan</label>
+                <label class="col-md-4 control-label" align="right">Satuan</label>
                 <div class="col-md-6">
                     <input type="text" name="satuan" class="form-control">
                 </div>
@@ -177,7 +178,7 @@
           <div class="clearfix"></div>
           <div class="clearfix"></div>
           <div class="form-group">
-                <label class="col-md-2 control-label" align="right">Sumber Dana</label>
+                <label class="col-md-4 control-label" align="right">Sumber Dana</label>
                 <div class="col-md-6">
                     <input type="text" name="sumber_dana" class="form-control">
                 </div>
@@ -185,9 +186,10 @@
           <div class="clearfix"></div>
           <div class="clearfix"></div>
           <div class="form-group">
-                <label class="col-md-2 control-label" align="right">Kondisi</label>
+                <label class="col-md-4 control-label" align="right">Kondisi</label>
                 <div class="col-md-6">
-                    <input type="text" name="kondisi" class="form-control">
+                    <input type="radio" class="flat" name="kondisi" id="genderZ" value="Baik" checked=""/> Baik &nbsp &nbsp
+                    <input type="radio" class="flat" name="kondisi" id="genderX" value="Tidak Baik"/> Tidak Baik
                 </div>
             </div>
           <div class="clearfix"></div>
@@ -196,7 +198,7 @@
         </div>
         <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Batalkan</button>
-        <button type="submit" class="btn btn-success" name="submit" class="form-control" value="Submit">Edit</button>
+        <button type="submit" class="btn btn-success" name="submit" class="form-control" value="Submit">Tambah</button>
         </div>
         {!! Form::close() !!}
         </div>
@@ -212,52 +214,86 @@
         <div class="modal-content">
           <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <h3 class="modal-title" id="hasilLabel" align="center">Edit data di Ruangan <?php echo($nama_ruangan); ?></h3>
+          <h3 class="modal-title" id="hasilLabel" align="center">Edit data Barang {{$data->nama_barang}}</h3>
         </div>
         <div class="modal-body">
         <div class="clearfix"></div>
         {!! Form::open(array('url'=>'/proseseditbrg', 'role'=>'form', 'class="form-horizontal form-label-left"')) !!}
-          <table border="0" align="center">
-          	<tr>
-          		<th>Kode Barang</th><th>&nbsp&nbsp : &nbsp</th><td><input type="text" name="tempat" class="form-control" value="{{$data->kode_barang}}"></td>
-          	</tr>
-          	<tr>
-          		<th>Nama Barang</th><th>&nbsp&nbsp : &nbsp</th><td><input type="text" name="tempat" class="form-control" value="{{$data->nama_barang}}"></td>
-          	</tr>
-          	<tr>
-          		<th>Merk</th><th>&nbsp&nbsp : &nbsp</th><td><input type="text" name="tempat" class="form-control" value="{{$data->merk}}"></td>
-          	</tr>
-          	<tr>
-          		<th>Tahun Perolehan</th><th>&nbsp&nbsp : &nbsp</th><td><input type="number" name="tempat" class="form-control" value="{{$data->tahun_perolehan}}"></td>
-          	</tr>
-          	<tr>
-          		<th>Harga</th><th>&nbsp&nbsp : &nbsp</th><td><input type="number" name="tempat" class="form-control" value="{{$data->harga}}"></td>
-          	</tr>
-          	<tr>
-          		<th>Jumlah</th><th>&nbsp&nbsp : &nbsp</th><td><input type="number" name="tempat" class="form-control" value="{{$data->jumlah}}"></td>
-          	</tr>
-          	<tr>
-          		<th>Satuan</th><th>&nbsp&nbsp : &nbsp</th><td><input type="text" name="tempat" class="form-control" value="{{$data->satuan}}"></td>
-          	</tr>
-          	<tr>
-          		<th>Sumber Dana</th><th>&nbsp&nbsp : &nbsp</th><td><input type="text" name="tempat" class="form-control" value="{{$data->sumber_dana}}"></td>
-          	</tr>
-          	<tr>
-          		<th>Kondisi</th><th>&nbsp&nbsp : &nbsp</th><td><input type="radio" class="flat" name="kondisi" id="genderM" value="Baik"> Baik</td>
-          	</tr>
-          	<tr>
-          		<th></th><th></th><td><input type="radio" class="flat" name="kondisi" id="genderF" value="Tidak Baik"> Tidak Baik</td>
-          	</tr>
-          </table>
+          <input type="hidden" name="id" class="form-control" value="{{$data->id}}">
+            <div class="form-group">
+            <label class="col-md-4 control-label" align="right">Kode Barang</label>
+            <div class="col-md-6">
+              <input type="text" name="kode_barang" class="form-control" value="{{$data->kode_barang}}">
+            </div>
+            </div>
+          <div class="clearfix"></div>
+          <div class="form-group">
+            <label class="col-md-4 control-label" align="right">Nama Barang</label>
+            <div class="col-md-6">
+              <input type="text" name="nama_barang" class="form-control" value="{{$data->nama_barang}}">
+            </div>
+          </div>
+          <div class="clearfix"></div>
+          <div class="form-group">
+            <label class="col-md-4 control-label" align="right">Merk</label>
+            <div class="col-md-6">
+              <input type="text" name="merk" class="form-control" value="{{$data->merk}}">
+            </div>
+          </div>
+            <div class="clearfix"></div>
+            <div class="form-group">
+                <label class="col-md-4 control-label" align="right">Tahun Perolehan</label>
+                <div class="col-md-6">
+                    <input type="number" name="tahun_perolehan" class="form-control" value="{{$data->tahun_perolehan}}">
+                </div>
+            </div>
+          <div class="clearfix"></div>
+          <div class="form-group">
+                <label class="col-md-4 control-label" align="right">Harga</label>
+                <div class="col-md-6">
+                    <input type="number" name="harga" class="form-control" value="{{$data->harga}}">
+                </div>
+            </div>
+          <div class="clearfix"></div>
+          <div class="form-group">
+                <label class="col-md-4 control-label" align="right">Jumlah</label>
+                <div class="col-md-6">
+                    <input type="number" name="jumlah" class="form-control" value="{{$data->jumlah}}">
+                </div>
+            </div>
+          <div class="clearfix"></div>
+          <div class="form-group">
+                <label class="col-md-4 control-label" align="right">Satuan</label>
+                <div class="col-md-6">
+                    <input type="text" name="satuan" class="form-control" value="{{$data->satuan}}">
+                </div>
+            </div>
+          <div class="clearfix"></div>
+          <div class="clearfix"></div>
+          <div class="form-group">
+                <label class="col-md-4 control-label" align="right">Sumber Dana</label>
+                <div class="col-md-6">
+                    <input type="text" name="sumber_dana" class="form-control" value="{{$data->sumber_dana}}">
+                </div>
+            </div>
+          <div class="clearfix"></div>
+          <div class="clearfix"></div>
+          <div class="form-group">
+                <label class="col-md-4 control-label" align="right">Kondisi</label>
+                <div class="col-md-6">
+                    <input type="radio" class="flat" name="kondisi" id="genderZ" value="Baik" @if($data->kondisi=="Baik") checked=""@endif required /> Baik &nbsp &nbsp
+                    <input type="radio" class="flat" name="kondisi" id="genderX" value="Tidak Baik" @if($data->kondisi=="Tidak Baik") checked=""@endif /> Tidak Baik
+                </div>
+            </div>
+          <div class="clearfix"></div>            
         </div>
         <div class="modal-footer">
-        <p align="center"><button type="button" class="btn btn-default" data-dismiss="modal">Batalkan</button>
-        <button type="submit" class="btn btn-primary" name="submit" class="form-control" value="Submit">Edit</button></p>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Batalkan</button>
+        <button type="submit" class="btn btn-success" name="submit" class="form-control" value="Submit">Edit</button>
         </div>
         {!! Form::close() !!}
         </div>
       </div>
-    </div>
     </div>
   @endforeach
 @endsection
@@ -297,28 +333,28 @@
         <div class="clearfix"></div>
         {!! Form::open(array('url'=>'/prosesnotifikasi', 'role'=>'form', 'class="form-horizontal form-label-left"')) !!}
             <div class="form-group">
-            <label class="col-md-2 control-label" align="right">Kondisi</label>
+            <label class="col-md-4 control-label" align="right">Kondisi</label>
             <div class="col-md-6">
               <input type="text" name="kondisi" class="form-control">
             </div>
             </div>
           <div class="clearfix"></div>
           <div class="form-group">
-            <label class="col-md-2 control-label" align="right">Komentar</label>
+            <label class="col-md-4 control-label" align="right">Komentar</label>
             <div class="col-md-6">
               <input type="text" name="komentar" class="form-control">
             </div>
           </div>
           <div class="clearfix"></div>
           <div class="form-group">
-            <label class="col-md-2 control-label" align="right">Merk</label>
+            <label class="col-md-4 control-label" align="right">Merk</label>
             <div class="col-md-6">
               <input type="text" name="merk" class="form-control">
             </div>
           </div>
             <div class="clearfix"></div>
             <div class="form-group">
-                <label class="col-md-2 control-label" align="right">Tahun Perolehan</label>
+                <label class="col-md-4 control-label" align="right">Tahun Perolehan</label>
                 <div class="col-md-6">
                     <input type="text" name="tahun_perolehan" class="form-control">
                 </div>

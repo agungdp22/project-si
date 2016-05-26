@@ -26,12 +26,6 @@ class Crudcontroller extends Controller
 		return Redirect::to('/read')->with('message','Berhasil Menambah Data');
 	}
 
-	public function lihatdata(){
-		//$data = Ruangan::orderby('id')->get();
-		$data = DB::table('ruang_dramaga')->get();
-		return View::make('read')->with('ruangdramaga',$data);
-	}
-
 	public function hapusdata($id){
 		DB::table('siswa')->where('id','=',$id)->delete();
 		return Redirect::to('/read')->with('message','Berhasil Menghapus Data');
@@ -53,7 +47,7 @@ class Crudcontroller extends Controller
 			'luas'=>Input::get('luas')
 			);
 		DB::table('ruang_dramaga')->where('id','=',Input::get('id'))->update($data);
-		return Redirect::to('read')->with('message','Berhasil Mengedit Data');
+		return Redirect::to('ruangandramaga')->with('message','Berhasil Mengedit Data');
 	}
 
 	public function tambahlogin(validasiregister $data){

@@ -33,28 +33,40 @@
 	<script src="{{URL('assets/template/js/custom.js')}}"></script>
 	<link href="{{URL('assets/template/css/custom.css')}}" rel="stylesheet">
 	
-	<?php $xxx=4;?>
+	<?php 
+		$jumlahsemuapesan = DB::table('pesan')->count();
+		$jumlahsemuanotif = 20;
+
+		$isipesanadmin = DB::table('pesan')->where('status','=',1)->where('tipe','=','admin')->orderby('id','desc')->get();
+		$jpa = count(DB::table('pesan')->where('tipe','=','admin')->get());
+		$jumlahpesanadmin = count($isipesanadmin);
+		$isipesanuser = DB::table('pesan')->where('status','=',1)->where('tipe','=','user')->orderby('id','desc')->get();
+		$jpu = count(DB::table('pesan')->where('tipe','=','user')->get());
+		$jumlahpesanuser = count($isipesanuser);
+		$cuk = $isipesanadmin;
+		$cukk = $isipesanuser;
+	?>
 	<script type="text/javascript">
-	   function ambilKomentar(){
-	   $.ajax({
-	      type: "POST",
-	      url: "ajaxnotifikasi",
-	      dataType:'json',
-	      success: function(response){
-	       $("#jumlah").text(""+response+"");
-	       //document.getElementById("jumlah_notif").innerHTML=response;
-	       timer = setTimeout("ambilKomentar()",5000);
-	      }
-	     }); 
-	  }
-	  $(document).ready(function(){
-	   ambilKomentar();
-	  });
+	  //  function ambilKomentar(){
+	  //  $.ajax({
+	  //     type: "POST",
+	  //     url: "ajaxnotifikasi",
+	  //     dataType:'json',
+	  //     success: function(response){
+	  //      $("#jumlah").text(""+response+"");
+	  //      //document.getElementById("jumlah_notif").innerHTML=response;
+	  //      timer = setTimeout("ambilKomentar()",5000);
+	  //     }
+	  //    }); 
+	  // }
+	  // $(document).ready(function(){
+	  //  ambilKomentar();
+	  // });
 
 	  window.onload = function()
 		{
 		   var hasil;
-		   hasil = <?php echo($xxx);?>;
+		   hasil = <?php echo($jumlahpesanadmin);?>;
 		   document.getElementById("jumlah_notif").innerHTML=hasil;
 		}
 	</script>
@@ -71,16 +83,27 @@
 				<nav class="cbp-spmenu cbp-spmenu-vertical cbp-spmenu-left" id="cbp-spmenu-s1">
 					<ul class="nav" id="side-menu">
 						<li>
-							<a href="{{URL('/')}}"><i class="fa fa-home nav_icon"></i>Home</a>
+							<a href="{{URL('/home')}}"><i class="fa fa-home nav_icon"></i>Home</a>
 						</li>
 						<li>
-							<a href="#"><i class="fa fa-cogs nav_icon"></i>Components <!-- <span class="nav-badge">12</span> --> <span class="fa arrow"></span></a>
+							<a href="#"><i class="fa fa-th-large nav_icon"></i>Lihat Ruangan <!-- <span class="nav-badge">12</span> --> <span class="fa arrow"></span></a>
 							<ul class="nav nav-second-level collapse">
 								<li>
-									<a href="grids.html">Grid System</a>
+									<a href="{{URL('/ruangandramaga')}}">Dramaga</a>
 								</li>
 								<li>
-									<a href="media.html">Media Objects</a>
+									<a href="{{URL('/ruanganbaranangsiang')}}">Baranangsiang</a>
+								</li>
+							</ul>
+						</li>
+						<li>
+							<a href="#"><i class="fa fa-table nav_icon"></i>Lihat Barang <span class="fa arrow"></span></a>
+							<ul class="nav nav-second-level collapse">
+								<li>
+									<a href="{{URL('lihatbarang')}}">Dramaga</a>
+								</li>
+								<li>
+									<a href="#">Baranangsiang</a>
 								</li>
 							</ul>
 						</li>
@@ -95,37 +118,27 @@
 								</li>
 							</ul>
 						</li> -->
+						 <!-- <li>
+							<a href=""><i class="fa fa-th-large nav_icon"></i>Lihat Ruangan <span class="nav-badge-btm">08</span></a>
+						</li>  -->
 						<li>
-							<a href="{{URL('/read')}}"><i class="fa fa-th-large nav_icon"></i>Lihat Ruangan <!--<span class="nav-badge-btm">08</span>--></a>
+							<a href="{{URL('notifikasi')}}"><i class="fa fa-file-text-o nav_icon"></i>&nbspPemberitahuan&nbsp<span class="nav-badge">{{$jumlahsemuanotif}}</span></a>
+							
 						</li>
 						<li>
-							<a href="#"><i class="fa fa-envelope nav_icon"></i>Mailbox<!-- <span class="fa arrow"></span> --></a>
-							<!-- <ul class="nav nav-second-level collapse">
+							<a href="#"><i class="fa fa-envelope nav_icon"></i>Pesan<span class="nav-badge">@if(Auth::user()->hak_akses=="admin"){{$jpa}} @else {{$jpu}}@endif</span></a>
+							<ul class="nav nav-second-level collapse">
 								<li>
-									<a href="inbox.html">Inbox <span class="nav-badge-btm">05</span></a>
+									<a href="{{URL('pesanmasuk')}}">Masuk</a>
 								</li>
 								<li>
-									<a href="compose.html">Compose email</a>
+									<a href="{{URL('pesankeluar')}}">Keluar</a>
 								</li>
-							</ul> -->
-						</li>
-						<li>
-							<a href="{{URL('lihatbarang')}}"><i class="fa fa-table nav_icon"></i>Lihat Barang <!--<span class="nav-badge">05</span>--></a>
-						</li>
-						<li>
-							<a href="#"><i class="fa fa-check-square-o nav_icon"></i>Forms<!-- <span class="fa arrow"></span> --></a>
-							<!-- <ul class="nav nav-second-level collapse">
-								<li>
-									<a href="forms.html">Basic Forms <span class="nav-badge-btm">07</span></a>
-								</li>
-								<li>
-									<a href="validation.html">Validation</a>
-								</li>
-							</ul> -->
+							</ul>
 						</li>
 						@if(Auth::user()->hak_akses=="admin")
 						<li>
-							<a href="{{URL('staff')}}"><i class="fa fa-file-text-o nav_icon"></i>Lihat Staff<!--<span class="nav-badge-btm">02</span><span class="fa arrow"></span>--></a>
+							<a href="{{URL('staff')}}"><i class="fa fa-cogs nav_icon"></i>Lihat Staff<!--<span class="nav-badge-btm">02</span><span class="fa arrow"></span>--></a>
 						</li>
 						@endif
 					</ul>
@@ -160,61 +173,14 @@
 			<div class="header-right">
 				<div class="profile_details_left">
 					<ul class="nofitications-dropdown">
+										
+
 						<li class="dropdown head-dpdn">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-envelope"></i><span class="badge">3</span></a>
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-bell"><!-- <span class="badge blue"></span> --></i></a>
 							<ul class="dropdown-menu">
 								<li>
 									<div class="notification_header">
-										<h3>You have 3 new messages</h3>
-									</div>
-								</li>
-								<li><a href="#">
-								   <div class="user_img"><img src="images/1.png" alt=""></div>
-								   <div class="notification_desc">
-									<p>Lorem ipsum dolor amet</p>
-									<p><span>1 hour ago</span></p>
-									</div>
-								   <div class="clearfix"></div>	
-								</a></li>
-								<li>
-									<div class="notification_bottom">
-										<a href="#">See all messages</a>
-									</div> 
-								</li>
-							</ul>
-						</li>
-				
-						@if(Session::has('notifikasi'))
-						<li class="dropdown head-dpdn">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-bell"></i><span class="badge blue">3</span></a>
-							<ul class="dropdown-menu">
-								<li>
-									<div class="notification_header">
-										<h3>You have 3 new notification</h3>
-									</div>
-								</li>
-								<li><a href="#">
-									<div class="user_img"><img src="images/2.png" alt=""></div>
-								   <div class="notification_desc">
-									<p>Barang dengan id xxx dilaporkan rusak</p>
-									<p><span>1 hour ago</span></p>
-									</div>
-								  <div class="clearfix"></div>	
-								 </a></li>
-								 <li>
-									<div class="notification_bottom">
-										<a href="#">See all notifications</a>
-									</div> 
-								</li>
-							</ul>
-						</li>
-						@else
-						<li class="dropdown head-dpdn">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-bell"><span class="badge blue"><div id="jumlah_notif"></div></span></i></a>
-							<ul class="dropdown-menu">
-								<li>
-									<div class="notification_header">
-										<h3>No Notificationnnn</h3>
+										<h3>No Notification</h3>
 									</div>
 								</li>
 								
@@ -225,11 +191,66 @@
 								</li>
 							</ul>
 						</li>
-						@endif
 						
 						@if(Auth::user()->hak_akses=="admin")
+						<!--(for admin)-->
 						<li class="dropdown head-dpdn">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-tasks"></i><span class="badge blue1">15</span></a>
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-envelope"></i>@if($jumlahpesanadmin)<span class="badge"><div id="jumlah_notif"></div></span>@endif</a>
+							<ul class="dropdown-menu">
+								<li>
+									<div class="notification_header">
+										<h3>@if($jumlahpesanadmin)Anda mempunyai {{$jumlahpesanadmin}} pesan baru @else Tidak ada pesan baru @endif</h3>
+									</div>
+								</li>
+								@foreach($cuk as $isipesanadmin)
+								<li><a href="#">
+								   <div class="user_img"></div>
+								   <div class="notification_desc">
+									<p>{{$isipesanadmin->namaruangan}}</p>
+									<p><span>{{$isipesanadmin->namapengirim}}</span></p>
+									</div>
+								   <div class="clearfix"></div>	
+								</a></li>
+								@endforeach
+								<li>
+									<div class="notification_bottom">
+										<a href="{{URL('pesan')}}">See all messages</a>
+									</div> 
+								</li>
+							</ul>
+						</li>
+						@else
+						<!--(for user)-->
+						<li class="dropdown head-dpdn">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-envelope"></i>@if($jumlahpesanuser)<span class="badge">{{$jumlahpesanuser}}</span>@endif</a>
+							<ul class="dropdown-menu">
+								<li>
+									<div class="notification_header">
+										<h3>@if($jumlahpesanuser)Anda mempunyai {{$jumlahpesanuser}} pesan baru @else Tidak ada pesan baru @endif</h3>
+									</div>
+								</li>
+								@foreach($cukk as $isipesanuser)
+								<li><a href="#">
+								   <div class="user_img"></div>
+								   <div class="notification_desc">
+									<p>{{$isipesanuser->namaruangan}}</p>
+									<p><span>{{$isipesanuser->namapengirim}}</span></p>
+									</div>
+								   <div class="clearfix"></div>	
+								</a></li>
+								@endforeach
+								<li>
+									<div class="notification_bottom">
+										<a href="{{URL('pesan')}}">See all messages</a>
+									</div> 
+								</li>
+							</ul>
+						</li>
+						@endif
+
+						@if(Auth::user()->hak_akses=="admin")
+						<li class="dropdown head-dpdn">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-tasks"></i><!-- <span class="badge blue1">15</span> --></a>
 							<ul class="dropdown-menu">
 								<li>
 									<div class="notification_header">
@@ -328,4 +349,6 @@
 @yield('modalEdit')
 @yield('hapus')
 @yield('modalNotif')
+
+
 </html>
