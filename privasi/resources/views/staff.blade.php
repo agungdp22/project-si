@@ -52,21 +52,34 @@
         <div class="modal-body">
         <div class="clearfix"></div>
         {!! Form::open(array('url'=>'/tambahlogin', 'role'=>'form', 'class="form-horizontal form-label-left"')) !!}
-          <table border="0" align="center">
-          	<tr>
-          		<th>Nama Lengkap</th><th>&nbsp&nbsp : &nbsp</th><td><input type="text" name="namalengkap" class="form-control"></td>
-          	</tr>
-          	<tr>
-          		<th>Email</th><th>&nbsp&nbsp : &nbsp</th><td><input type="text" name="email" class="form-control"></td>
-          	</tr>
-          	<tr>
-          		<th>Username</th><th>&nbsp&nbsp : &nbsp</th><td><input type="text" name="username" class="form-control"></td>
-          	</tr>
-          	<tr>
-          		<th>Password</th><th>&nbsp&nbsp : &nbsp</th><td><input type="text" name="password" class="form-control"></td>
-          	</tr>
-          	
-          </table>
+        <div class="form-group">
+            <label class="col-md-4 control-label" align="right">Nama Staff</label>
+            <div class="col-md-6">
+              <input type="text" name="namalengkap" class="form-control" required="">
+            </div>
+            </div>
+          <div class="clearfix"></div>
+          <div class="form-group">
+            <label class="col-md-4 control-label" align="right">Email</label>
+            <div class="col-md-6">
+              <input type="email" name="email" class="form-control" required="">
+            </div>
+            </div>
+          <div class="clearfix"></div>
+          <div class="form-group">
+            <label class="col-md-4 control-label" align="right">Username</label>
+            <div class="col-md-6">
+              <input type="text" name="username" class="form-control" required="">
+            </div>
+            </div>
+          <div class="clearfix"></div>
+          <div class="form-group">
+            <label class="col-md-4 control-label" align="right">Password</label>
+            <div class="col-md-6">
+              <input type="text" name="password" class="form-control" required="">
+            </div>
+            </div>
+          <div class="clearfix"></div>
 
             
         </div>

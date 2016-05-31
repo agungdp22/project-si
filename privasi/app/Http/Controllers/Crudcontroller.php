@@ -37,6 +37,7 @@ class Crudcontroller extends Controller
 	}
 
 	public function proseseditdata(){
+		$luas = (Input::get('ukuran_panjang'))*(Input::get('ukuran_lebar'));
 		$data = array(
 			'nama_ruang'=>Input::get('nama_ruang'),
 			'kode_ruang'=>Input::get('kode_ruang'),
@@ -44,10 +45,10 @@ class Crudcontroller extends Controller
 			'level'=>Input::get('level'),
 			'ukuran_panjang'=>Input::get('ukuran_panjang'),
 			'ukuran_lebar'=>Input::get('ukuran_lebar'),
-			'luas'=>Input::get('luas')
+			'luas'=>$luas
 			);
 		DB::table('ruang_dramaga')->where('id','=',Input::get('id'))->update($data);
-		return Redirect::to('ruangandramaga')->with('message','Berhasil Mengedit Data');
+		return back()->with('message','Berhasil Mengedit Data');
 	}
 
 	public function tambahlogin(validasiregister $data){

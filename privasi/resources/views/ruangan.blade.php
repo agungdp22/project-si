@@ -4,24 +4,36 @@
 @endsection
 
 @section('content')
-<script type="text/javascript" language="JavaScript">
-	 function konfirmasi()
-	 {
-	 tanya = confirm("Anda Yakin Akan Menghapus Data?");
-	 if (tanya == true) return true;
-	 else return false;
-	 }
- </script>
+<?php $tole = 1;
+$indeks = 0;?>
+@foreach ($dataruangan as $data)
+<?php
+$idruangan = $data->id;
+$lka = $data->lokasi;
+if($tole==1)
+  break;
+?>
+@endforeach
+
+@foreach ($dataruangan as $data)
+<?php
+$idruangan = $data->id;
+$jumlahbarang[$indeks++] = DB::table('listbarang')->where('id_ruangan','=',$idruangan)->count();
+?>
+@endforeach
+
 
 @if(Auth::user())
 <div id="page-wrapper">
 	<div class="main-page">
-  <h3>List Ruangan di Dramaga</h3>
+  <h3>List Ruangan di {{$lka}}</h3>
 	@if(Session::has('message'))
 	<span class="label label-success">{{ Session::get('message') }}</span>
 	@endif
   @if(Auth::user()->hak_akses=="admin")
-   <p align="right"> <a href="" data-placement="top" data-toggle="modal" data-target="#modalTambah" type="button" data-original-title="Edit" class="btn  btn-sm"><span class="btn btn-success">Tambah Data</span></a></p>
+  <br>
+  <h4 align="right"><a href="" data-placement="top" data-toggle="modal" data-target="#modalTambah" type="button" data-original-title="Edit"><span class="btn btn-primary">Tambah Data</span></a></h4><br>
+   
   @endif
 	<p></p>
 	<div class="table-responsive">
@@ -29,6 +41,7 @@
 		<tr align="center">
 			<th>No</th>
 			<th>Nama Ruangan</th>
+      <th>Jumlah Barang</th>
 			<th>Kode Ruang</th>
 			<th>Wing</th>
 			<th>Level</th>
@@ -37,11 +50,13 @@
 			<th>Luas</th>
 			<th>Action</th>
 		</tr>
-		<?php $no=1;?>
-		@foreach ($ruangdramaga as $data)
+		<?php $no=1;
+    $ke = 0;?>
+		@foreach ($dataruangan as $data)
 		<tr>
 			<td>{{ $no++ }}</td>
-			<td>{{ $data->nama_ruang }}&nbsp&nbsp&nbsp<a href="lihatruang/{{$data->id}}"><p align="left"><span class="label label-success">Lihat</span></p></a></td>
+			<td>{{ $data->nama_ruang }}&nbsp&nbsp&nbsp<h4><a href="lihatruang/{{$data->id}}"><span class="label label-success">Lihat</span></a></h4></td>
+      <td>{{ $jumlahbarang[$ke++] }}</td>
 			<td>{{ $data->kode_ruang }}</td>
 			<td>{{ $data->wing }}</td>
 			<td>{{ $data->level }}</td>
@@ -50,9 +65,8 @@
 			<td>{{ $data->luas }}</td>
 			@if(Auth::user()->hak_akses=="admin")
 			<td>
-				<a href="" data-placement="top" data-toggle="modal" data-target="#edit{{$data->id}}" type="button" data-original-title="Edit" class="btn btn-sm"><span class="btn btn-success">Edit..</span></a><br>
+				<h4><a href="" data-placement="top" data-toggle="modal" data-target="#edit{{$data->id}}" type="button" data-original-title="Edit"><span class="label label-success">Edit..</span></a></h4>
 			</td>
-
 			@else
 			<td><a href="" data-placement="top" data-toggle="modal" data-target="#notif{{$data->id}}" type="button" data-original-title="Notifikasi" class="btn btn-sm"><div class="btn btn-success">Kirim Pesan</div></a></td>
 			@endif
@@ -71,50 +85,51 @@
         <div class="modal-content">
           <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title" id="hasilLabel">Tambah Ruangan</h4>
+          <h4 class="modal-title" id="hasilLabel">Tambah Ruangan Baru di {{$lka}}</h4>
         </div>
         <div class="modal-body">
         <div class="clearfix"></div>
         {!! Form::open(array('url'=>'/prosestambahruangan', 'role'=>'form', 'class="form-horizontal form-label-left"')) !!}
+        <input type="hidden" name="lokasi" class="form-control" value="{{$lka}}" required="">
             <div class="form-group">
             <label class="col-md-4 control-label" align="right">Nama Ruangan Baru</label>
             <div class="col-md-6">
-              <input type="text" name="nama_ruang" class="form-control">
+              <input type="text" name="nama_ruang" class="form-control" required="">
             </div>
             </div>
           <div class="clearfix"></div>
           <div class="form-group">
             <label class="col-md-4 control-label" align="right">Kode Ruangan</label>
             <div class="col-md-6">
-              <input type="text" name="kode_ruang" class="form-control">
+              <input type="text" name="kode_ruang" class="form-control" required="">
             </div>
           </div>
           <div class="clearfix"></div>
           <div class="form-group">
             <label class="col-md-4 control-label" align="right">Wing</label>
             <div class="col-md-6">
-              <input type="numeric" name="wing" class="form-control">
+              <input type="numeric" name="wing" class="form-control" required="">
             </div>
           </div>
             <div class="clearfix"></div>
             <div class="form-group">
                 <label class="col-md-4 control-label" align="right">Level</label>
                 <div class="col-md-6">
-                    <input type="text" name="level" class="form-control">
+                    <input type="text" name="level" class="form-control" required="">
                 </div>
             </div>
           <div class="clearfix"></div>
           <div class="form-group">
                 <label class="col-md-4 control-label" align="right">Panjang</label>
                 <div class="col-md-6">
-                    <input type="text" name="panjang" class="form-control">
+                    <input type="text" name="panjang" class="form-control" required="">
                 </div>
             </div>
           <div class="clearfix"></div>
           <div class="form-group">
                 <label class="col-md-4 control-label" align="right">Lebar</label>
                 <div class="col-md-6">
-                    <input type="text" name="lebar" class="form-control">
+                    <input type="text" name="lebar" class="form-control" required="">
                 </div>
             </div>
           <div class="clearfix"></div>
@@ -140,7 +155,7 @@
 @endsection
 
 @section('modalEdit')
-  @foreach($ruangdramaga as $data)
+  @foreach($dataruangan as $data)
     <div class="modal fade fadeIn edit" id="edit{{$data->id}}" tabindex="-1" role="dialog" aria-labelledby="editLabel">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -150,27 +165,60 @@
         </div>
         <div class="modal-body">
         <div class="clearfix"></div>
-        {!! Form::open(['url' => '/prosesedit']) !!}
-		{!! Form::hidden('id',$data->id,['class'=>'form-control'])!!}
-	    Nama Ruangan:
-	    {!! Form::text('nama_ruang', $data->nama_ruang, ['class' => 'form-control']) !!}
-	    Kode Ruangan:
-	    {!! Form::text('kode_ruang', $data->kode_ruang, ['class' => 'form-control']) !!}
-	    Wing:
-	    {!! Form::text('wing', $data->wing, ['class' => 'form-control']) !!}
-	    Level:
-	    {!! Form::text('level', $data->level, ['class' => 'form-control']) !!}
-	    Ukuran Panjang (meter):
-	    {!! Form::text('ukuran_panjang', $data->ukuran_panjang, ['class' => 'form-control']) !!}
-	    Ukuran Lebar (meter):
-	    {!! Form::text('ukuran_lebar', $data->ukuran_lebar, ['class' => 'form-control']) !!}
-	    Luas:
-	    {!! Form::text('luas', $data->luas, ['class' => 'form-control']) !!}
+        
+
+      {!! Form::open(array('url'=>'/prosesedit', 'role'=>'form', 'class="form-horizontal form-label-left"')) !!}
+      <input type="hidden" name="id" class="form-control" value="{{$data->id}}" required="">
+            <div class="form-group">
+            <label class="col-md-4 control-label" align="right">Nama Ruangan Baru</label>
+            <div class="col-md-6">
+              <input type="text" name="nama_ruang" class="form-control" value="{{$data->nama_ruang}}" required="">
+            </div>
+            </div>
+          <div class="clearfix"></div>
+          <div class="form-group">
+            <label class="col-md-4 control-label" align="right">Kode Ruangan</label>
+            <div class="col-md-6">
+              <input type="text" name="kode_ruang" class="form-control" value="{{$data->kode_ruang}}" required="">
+            </div>
+          </div>
+          <div class="clearfix"></div>
+          <div class="form-group">
+            <label class="col-md-4 control-label" align="right">Wing</label>
+            <div class="col-md-6">
+              <input type="numeric" name="wing" class="form-control" value="{{$data->wing}}" required="">
+            </div>
+          </div>
+            <div class="clearfix"></div>
+            <div class="form-group">
+                <label class="col-md-4 control-label" align="right">Level</label>
+                <div class="col-md-6">
+                    <input type="text" name="level" class="form-control" value="{{$data->level}}" required="">
+                </div>
+            </div>
+          <div class="clearfix"></div>
+          <div class="form-group">
+                <label class="col-md-4 control-label" align="right">Panjang</label>
+                <div class="col-md-6">
+                    <input type="text" name="ukuran_panjang" class="form-control" value="{{$data->ukuran_panjang}}" required="">
+                </div>
+            </div>
+          <div class="clearfix"></div>
+          <div class="form-group">
+                <label class="col-md-4 control-label" align="right">Lebar</label>
+                <div class="col-md-6">
+                    <input type="text" name="ukuran_lebar" class="form-control" value="{{$data->ukuran_lebar}}" required="">
+                </div>
+            </div>
+          <div class="clearfix"></div>
+
+            
         </div>
         <div class="modal-footer">
-        <button type="button" class="btn btn-danger" data-dismiss="modal">Batalkan</button>
-    	{!! Form::submit('Ubah Data',['class' => 'btn btn-success']) !!}
-    	{!! Form::close() !!}
+        <button type="button" class="btn btn-default" data-dismiss="modal">Batalkan</button>
+        <button type="submit" class="btn btn-success" name="submit" class="form-control" value="Submit">Edit Data</button>
+        </div>
+        {!! Form::close() !!}
         </div>
         </div>
       </div>
@@ -180,7 +228,7 @@
 @endsection
 
 @section('hapus')
-@foreach($ruangdramaga as $data)
+@foreach($dataruangan as $data)
   <div class="modal fade fadeIn delete" id="delete{{$data->id}}" tabindex="-1" role="dialog" aria-labelledby="deleteLabel">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
@@ -202,7 +250,7 @@
 @endsection
 
 @section('modalNotif')
-@foreach($ruangdramaga as $data)
+@foreach($dataruangan as $data)
 <div class="modal fade fadeIn edit" id="notif{{$data->id}}" tabindex="-1" role="dialog" aria-labelledby="editLabel">
       <div class="modal-dialog" role="document">
         <div class="modal-content">

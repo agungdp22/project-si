@@ -16,10 +16,15 @@ use App\Http\Requests\validasitambahdata;
 
 class Ruangcontroller extends Controller
 {
-	public function lihatdataruangandramaga(){
+	public function lihatdataruangan($lokasi){
 		//$data = Ruangan::orderby('id')->get();
-		$data = DB::table('ruang_dramaga')->get();
-		return View::make('ruangandramaga')->with('ruangdramaga',$data);
+		if($lokasi=="Dramaga"){
+			$data = DB::table('ruang_dramaga')->where('lokasi','=',$lokasi)->get();
+		}
+		else if ($lokasi == "Baranangsiang") {
+			$data = DB::table('ruang_dramaga')->where('lokasi','=',$lokasi)->get();
+		}
+		return View::make('ruangan')->with('dataruangan',$data);
 	}
 
 	public function lihatdataruanganbaranangsiang(){
@@ -27,6 +32,7 @@ class Ruangcontroller extends Controller
 		$data = DB::table('ruang_baranang')->get();
 		return View::make('ruanganbaranangsiang')->with('ruangbaranangsiang',$data);
 	}
+	
 
 	public function ndelokruangan($id){
 		$data = DB::table('listbarang')->where('id_ruangan','=',$id)->get();
@@ -42,6 +48,7 @@ class Ruangcontroller extends Controller
 	public function prosestambahruangan(){
 		$luas = (Input::get('panjang'))*(Input::get('lebar'));
 		$data = array(
+			'lokasi' => Input::get('lokasi'),
 			'nama_ruang' => Input::get('nama_ruang'),
 			'kode_ruang' => Input::get('kode_ruang'),
 			'wing' => Input::get('wing'),
@@ -52,12 +59,11 @@ class Ruangcontroller extends Controller
 			'keterangan' => Input::get('keterangan')
 			);
 		DB::table('ruang_dramaga')->insert($data);
-		return Redirect::to('read')->with('message','Berhasil Tambah Data');
+		return back()->with('message','Berhasil Tambah Data');
 	}
 
 	public function prosesngeditbarang(){
 		$data = array(
-			'kode_barang'=>Input::get('kode_barang'),
 			'nama_barang'=>Input::get('nama_barang'),
 			'merk'=>Input::get('merk'),
 			'tahun_perolehan'=>Input::get('tahun_perolehan'),
@@ -67,6 +73,15 @@ class Ruangcontroller extends Controller
 			'sumber_dana'=>Input::get('sumber_dana'),
 			'kondisi'=>Input::get('kondisi')
 			);
+
+		$notif = array(
+			'ruangan' => Input::get('namaruangan'),
+			'barang' => Input::get('nama_barang'),
+			'pengirim' => Input::get('pengirim'),
+			'isinotif' => 'barang ente rusak',
+			'status' => 1
+			);
+		DB::table('notif')->insert($notif);
 		DB::table('listbarang')->where('id','=',Input::get('id'))->update($data);
 		return back()->with('message','Berhasil Mengedit Data');
 	}
@@ -109,4 +124,18 @@ class Ruangcontroller extends Controller
 		return View::make('ruanganajax')->with('ruangan',$data);
 	}
 
+	public function getallbarangaktif($status){
+		if($status=="aktif"){
+			$data = DB::table('listbarang')->where('kondisi','=','Baik')->get();
+		}
+		else if($status=="tidakaktif"){
+			$data = DB::table('listbarang')->where('kondisi','=','Tidak Baik')->get();
+		}
+		return View::make('barang/semuabarangaktif')->with('barang',$data);
+	}
+
+	public function exportexcel($id){
+		$data = DB::table('listbarang')->where('id_ruangan','=',$id)->get();
+		return View::make('barang/exportexcel')->with('barang',$data);
+	}
 }

@@ -33,7 +33,7 @@
 	<script src="{{URL('assets/template/js/custom.js')}}"></script>
 	<link href="{{URL('assets/template/css/custom.css')}}" rel="stylesheet">
 	
-	<?php 
+	<?php
 		$jumlahsemuapesan = DB::table('pesan')->count();
 		$jumlahsemuanotif = 20;
 
@@ -41,10 +41,15 @@
 		$jpa = count(DB::table('pesan')->where('tipe','=','admin')->get());
 		$jumlahpesanadmin = count($isipesanadmin);
 		$isipesanuser = DB::table('pesan')->where('status','=',1)->where('tipe','=','user')->orderby('id','desc')->get();
-		$jpu = count(DB::table('pesan')->where('tipe','=','user')->get());
+		if(Auth::user()){
+		$jpu = count(DB::table('pesan')->where('tipe','=','user')->where('penerima','=',Auth::user()->namalengkap)->get());}
 		$jumlahpesanuser = count($isipesanuser);
 		$cuk = $isipesanadmin;
 		$cukk = $isipesanuser;
+
+		$adanotif = DB::table('notif')->where('status','=',1)->count();
+		$isinotif = DB::table('notif')->where('status','=',1)->get();
+		$in = $isinotif;
 	?>
 	<script type="text/javascript">
 	  //  function ambilKomentar(){
@@ -89,47 +94,36 @@
 							<a href="#"><i class="fa fa-th-large nav_icon"></i>Lihat Ruangan <!-- <span class="nav-badge">12</span> --> <span class="fa arrow"></span></a>
 							<ul class="nav nav-second-level collapse">
 								<li>
-									<a href="{{URL('/ruangandramaga')}}">Dramaga</a>
+									<a href="{{URL('ruangan',"Dramaga")}}">Dramaga</a>
 								</li>
 								<li>
-									<a href="{{URL('/ruanganbaranangsiang')}}">Baranangsiang</a>
+									<a href="{{URL('ruangan',"Baranangsiang")}}">Baranangsiang</a>
 								</li>
 							</ul>
 						</li>
 						<li>
-							<a href="#"><i class="fa fa-table nav_icon"></i>Lihat Barang <span class="fa arrow"></span></a>
+							<a href="#"><i class="fa fa-table nav_icon"></i>Status Barang <span class="fa arrow"></span></a>
 							<ul class="nav nav-second-level collapse">
 								<li>
-									<a href="{{URL('lihatbarang')}}">Dramaga</a>
+									<a href="{{URL('barang',"aktif")}}">Aktif</a>
 								</li>
 								<li>
-									<a href="#">Baranangsiang</a>
+									<a href="{{URL('barang',"tidakaktif")}}">Siap Dihapus</a>
+								</li>
+								<li>
+									<a href="{{URL('barang',"tidakaktif")}}">Sudah di Rektorat</a>
 								</li>
 							</ul>
 						</li>
-						<!-- <li class="">
-							<a href="#"><i class="fa fa-book nav_icon"></i>UI Elements</a>
-							<ul class="nav nav-second-level collapse">
-								<li>
-									<a href="general.html">General<span class="nav-badge-btm">08</span></a>
-								</li>
-								<li>
-									<a href="typography.html">Typography</a>
-								</li>
-							</ul>
-						</li> -->
-						 <!-- <li>
-							<a href=""><i class="fa fa-th-large nav_icon"></i>Lihat Ruangan <span class="nav-badge-btm">08</span></a>
-						</li>  -->
 						<li>
-							<a href="{{URL('notifikasi')}}"><i class="fa fa-file-text-o nav_icon"></i>&nbspPemberitahuan&nbsp<span class="nav-badge">{{$jumlahsemuanotif}}</span></a>
+							<a href="{{URL('notifikasi')}}"><i class="fa fa-file-text-o nav_icon"></i>&nbspPemberitahuan&nbsp</a>
 							
 						</li>
 						<li>
-							<a href="#"><i class="fa fa-envelope nav_icon"></i>Pesan<span class="nav-badge">@if(Auth::user()->hak_akses=="admin"){{$jpa}} @else {{$jpu}}@endif</span></a>
+							<a href="#"><i class="fa fa-envelope nav_icon"></i>Pesan<span class="fa arrow"></span></a>
 							<ul class="nav nav-second-level collapse">
 								<li>
-									<a href="{{URL('pesanmasuk')}}">Masuk</a>
+									<a href="{{URL('pesanmasuk')}}">Masuk &nbsp[@if(Auth::user()->hak_akses=="admin"){{$jpa}}@else{{$jpu}}@endif]</a>
 								</li>
 								<li>
 									<a href="{{URL('pesankeluar')}}">Keluar</a>
@@ -174,7 +168,33 @@
 				<div class="profile_details_left">
 					<ul class="nofitications-dropdown">
 										
-
+						@if((Auth::user()->hak_akses=="admin") && $adanotif)
+						<li class="dropdown head-dpdn">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-bell"><span class="badge blue">{{$adanotif}}</span></i></a>
+							<ul class="dropdown-menu">
+							<?php $no = 1;?>
+							@foreach($in as $isinotif)
+								<li>
+									<div class="notification_header">
+										<h3>{{$isinotif->pengirim}} telah mengedit barang di ruangan {{$isinotif->ruangan}}</h3>
+									</div>
+								</li>
+								<?php $no++;?>
+								@if($no == 5) 
+									<li>
+											<p align="center">.....</p>
+									</li>
+									<?php break;?>
+								@endif
+							@endforeach
+								 <li>
+									<div class="notification_bottom">
+										<a href="#">See all notifications</a>
+									</div> 
+								</li>
+							</ul>
+						</li>
+						@else
 						<li class="dropdown head-dpdn">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-bell"><!-- <span class="badge blue"></span> --></i></a>
 							<ul class="dropdown-menu">
@@ -191,6 +211,7 @@
 								</li>
 							</ul>
 						</li>
+						@endif
 						
 						@if(Auth::user()->hak_akses=="admin")
 						<!--(for admin)-->
@@ -214,7 +235,7 @@
 								@endforeach
 								<li>
 									<div class="notification_bottom">
-										<a href="{{URL('pesan')}}">See all messages</a>
+										<a href="{{URL('pesanmasuk')}}">See all messages</a>
 									</div> 
 								</li>
 							</ul>

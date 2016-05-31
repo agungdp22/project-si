@@ -10,11 +10,11 @@
 	$liststaff = DB::table('login')->where('hak_akses','=','user')->get();
 	$cukstaff = $liststaff;
 
-	$jumlahruangandramaga = DB::table('ruang_dramaga')->count();
+	$jumlahruangan = DB::table('ruang_dramaga')->count();
 	$jumlahruanganbaranang = DB::table('ruang_baranang')->count();
 	$jumlahstaff = DB::table('login')->where('hak_akses','=','user')->count();
 	$jumlahinventaris = DB::table('listbarang')->count();
-	$jumlahruangan = $jumlahruangandramaga + $jumlahruanganbaranang;
+	//$jumlahruangan = $jumlahruangandramaga + $jumlahruanganbaranang;
 	$nomor = 1;
 ?>
 @section('content')
@@ -63,6 +63,7 @@
 								<tr>
 									<th>NO</th>
 									<th>RUANGAN</th>
+									<th>LOKASI</th>
 									<th>JUMLAH BARANG</th>
 									<th>ACTION</th>
 								</tr>
@@ -73,39 +74,11 @@
 								<?php $jumlahbarangdramaga = DB::table('listbarang')->where('id_ruangan','=',$listruangan->id)->count();?>
 									<th scope="row">{{$nomor++}}</th>
 									<td>{{$listruangan->nama_ruang}}</td>
+									<td>{{$listruangan->lokasi}}</td>
 									<td align="center">{{$jumlahbarangdramaga}}<!-- <i class="fa fa-level-up"></i> --></td>
 									<td><a href="{{URL('lihatruang',$listruangan->id)}}"><span class="label label-success">Lihat</span></a></td>
 									
-								<!-- </tr>
-								<tr>
-									<th scope="row">2</th>
-									<td>Aliquam</td>
-									<td><span class="label label-warning">New</span></td>
-									<td><h5>35% <i class="fa fa-level-up"></i></h5></td>
-								</tr>
-								<tr>
-									<th scope="row">3</th>
-									<td>Lorem ipsum</td>
-									<td><span class="label label-danger">Overdue</span></td>
-									<td><h5  class="down">40% <i class="fa fa-level-down"></i></h5></td>
-								</tr>
-								<tr>
-									<th scope="row">4</th>
-									<td>Aliquam</td>
-									<td><span class="label label-info">Out of stock</span></td>
-									<td><h5>100% <i class="fa fa-level-up"></i></h5></td>
-								</tr>
-								<tr>
-									<th scope="row">5</th>
-									<td>Lorem ipsum</td>
-									<td><span class="label label-success">In progress</span></td>
-									<td><h5 class="down">10% <i class="fa fa-level-down"></i></h5></td>
-								</tr>
-								<tr>
-									<th scope="row">6</th>
-									<td>Aliquam</td>
-									<td><span class="label label-warning">New</span></td>
-									<td><h5>38% <i class="fa fa-level-up"></i></h5></td> -->
+								
 								</tr>
 							</tbody>
 							@endforeach

@@ -1,4 +1,7 @@
 @extends('template/t_index')
+@section('title')
+	Home | Staff
+@endsection
 @section('content')
 
 <div id="page-wrapper">

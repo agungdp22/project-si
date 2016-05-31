@@ -36,12 +36,17 @@
 				<th>Wing/Level</th><th>&nbsp&nbsp:&nbsp&nbsp</th><th>{{$ruang->wing}}/{{$ruang->level}}</th>
 			</tr>
 		</table>
-		<p align="left"><a onclick="history.go(-1);"><span class="btn btn-danger">Kembali</span></a>
-		<p align="right"><a href="" data-placement="top" data-toggle="modal" data-target="#modalTambah" type="button" data-original-title="Edit" class="btn  btn-sm"><span class="btn btn-success">+ | Tambah Data</span></a></p></p>
-			
+		<!-- <p align="right"><a href="" data-placement="top" data-toggle="modal" data-target="#modalTambah" type="button" data-original-title="Edit" class="btn  btn-sm"><span class="btn btn-success">+ | Tambah Data</span></a></p>	 -->
 		<?php $nama_ruangan = ($ruang->nama_ruang); 
-			$id_ruang = ($ruang->id); ?>
+			$id_ruang = ($ruang->id); 
+      $namaente = Auth::user()->namalengkap;?>
 	@endforeach
+  <br>
+ <!--  <h4><p align="left"><a onclick="history.go(-1);"><span class="btn btn-danger">Kembali</span></a></p></h4> -->
+ <h4><a href ="" onclick="history.go(-1);"><span class="label label-default">Kembali</span></a>
+<a href="{{URL('exportexcel',$id_ruang)}}"><span class="label label-success">Export to Excel</span></a>
+<a href="" data-placement="top" data-toggle="modal" data-target="#modalTambah" type="button" data-original-title="Edit"><span class="label label-primary">Tambah Data</span></a>
+ </h4><br>
 	<table class="table table-bordered">
 		<tr align="center">
 			<th>No</th>
@@ -53,7 +58,6 @@
 			<th>Harga (Rupiah)</th>
       @endif
 			<th>Jumlah</th>
-			<th>Satuan</th>
       @if(Auth::user()->hak_akses=="admin")
 			<th>Total (Rupiah)</th>
       @endif
@@ -75,8 +79,7 @@
       @if(Auth::user()->hak_akses=="admin")
 			<td>{{ format_rupiah($data->harga) }}</td>
       @endif
-			<td>{{ $data->jumlah }}</td>
-			<td>{{ $data->satuan }}</td>
+			<td>{{ $data->jumlah }} &nbsp {{ $data->satuan }}</td>
       @if(Auth::user()->hak_akses=="admin")
 			<td>{{ format_rupiah($ttl) }}</td>
       @endif
@@ -84,10 +87,10 @@
       <td>{{ $data->kondisi}}</td>
 			@if(Auth::user()->hak_akses=="admin")
       
-			<td>			
-				<a href="" data-placement="top" data-toggle="modal" data-target="#editbarang{{$data->id}}" type="button" data-original-title="Edit" class="btn  btn-sm"><i class="fa fa-pencil">&nbsp</i>Edit....</a><br>
-        <a href="" data-placement="top" data-toggle="modal" data-target="#delete{{$data->id}}" type="button" data-original-title="Delete" class="btn  btn-sm tooltips"><i class="fa fa-trash-o">&nbsp</i>Hapus</a>
-        	</td>
+			<td>
+       <h4><a href="" data-placement="top" data-toggle="modal" data-target="#editbarang{{$data->id}}" type="button" data-original-title="Edit"><span class="label label-primary">Edit..</span></a><br>
+			 <a href="" data-placement="top" data-toggle="modal" data-target="#delete{{$data->id}}" type="button" data-original-title="Delete"><span class="label label-danger">Hapus</a></h4>
+      </td>
 			@else
 			<td><!-- <a href="" data-placement="top" data-toggle="modal" data-target="#modalNotif" type="button" data-original-title="Notifikasi" class="btn  btn-sm"><span class="btn btn-success">Kirim Notifikasi</span></a> -->
       <a href="" data-placement="top" data-toggle="modal" data-target="#editbarang{{$data->id}}" type="button" data-original-title="Edit" class="btn  btn-sm"><span class="btn btn-success">Edit..</span></a><br></td>
@@ -130,49 +133,49 @@
             <div class="form-group">
             <label class="col-md-4 control-label" align="right">Kode Barang</label>
             <div class="col-md-6">
-              <input type="text" name="kode_barang" class="form-control">
+              <input type="text" name="kode_barang" class="form-control" required="">
             </div>
             </div>
           <div class="clearfix"></div>
           <div class="form-group">
             <label class="col-md-4 control-label" align="right">Nama Barang</label>
             <div class="col-md-6">
-              <input type="text" name="nama_barang" class="form-control">
+              <input type="text" name="nama_barang" class="form-control" required="">
             </div>
           </div>
           <div class="clearfix"></div>
           <div class="form-group">
             <label class="col-md-4 control-label" align="right">Merk</label>
             <div class="col-md-6">
-              <input type="text" name="merk" class="form-control">
+              <input type="text" name="merk" class="form-control" required="">
             </div>
           </div>
             <div class="clearfix"></div>
             <div class="form-group">
                 <label class="col-md-4 control-label" align="right">Tahun Perolehan</label>
                 <div class="col-md-6">
-                    <input type="number" name="tahun_perolehan" class="form-control">
+                    <input type="number" name="tahun_perolehan" class="form-control" required="">
                 </div>
             </div>
           <div class="clearfix"></div>
           <div class="form-group">
                 <label class="col-md-4 control-label" align="right">Harga</label>
                 <div class="col-md-6">
-                    <input type="number" name="harga" class="form-control">
+                    <input type="number" name="harga" class="form-control" required="">
                 </div>
             </div>
           <div class="clearfix"></div>
           <div class="form-group">
                 <label class="col-md-4 control-label" align="right">Jumlah</label>
                 <div class="col-md-6">
-                    <input type="number" name="jumlah" class="form-control">
+                    <input type="number" name="jumlah" class="form-control" required="">
                 </div>
             </div>
           <div class="clearfix"></div>
           <div class="form-group">
                 <label class="col-md-4 control-label" align="right">Satuan</label>
                 <div class="col-md-6">
-                    <input type="text" name="satuan" class="form-control">
+                    <input type="text" name="satuan" class="form-control" required="">
                 </div>
             </div>
           <div class="clearfix"></div>
@@ -180,7 +183,7 @@
           <div class="form-group">
                 <label class="col-md-4 control-label" align="right">Sumber Dana</label>
                 <div class="col-md-6">
-                    <input type="text" name="sumber_dana" class="form-control">
+                    <input type="text" name="sumber_dana" class="form-control" required="">
                 </div>
             </div>
           <div class="clearfix"></div>
@@ -220,10 +223,12 @@
         <div class="clearfix"></div>
         {!! Form::open(array('url'=>'/proseseditbrg', 'role'=>'form', 'class="form-horizontal form-label-left"')) !!}
           <input type="hidden" name="id" class="form-control" value="{{$data->id}}">
+          <input type="hidden" name="namaruangan" class="form-control" value="{{$nama_ruangan}}">
+          <input type="hidden" name="pengirim" class="form-control" value="{{$namaente}}">
             <div class="form-group">
             <label class="col-md-4 control-label" align="right">Kode Barang</label>
             <div class="col-md-6">
-              <input type="text" name="kode_barang" class="form-control" value="{{$data->kode_barang}}">
+              <label class="col-md-4 control-label" align="right">{{$data->kode_barang}}</label>
             </div>
             </div>
           <div class="clearfix"></div>

@@ -46,4 +46,9 @@ class Notifikasicontroller extends Controller{
 		DB::table('pesan')->where('id','=',$id)->delete();
 		return back();
 	}
+
+	public function notif(){
+		$data = DB::table('pesan')->get();
+		return View::make('notifikasi')->with('notif',$data);
+	}
 }

@@ -31,12 +31,12 @@
                       Reply
                     </a>
                   </li>
-                  <li>
+                  <!-- <li>
                     <a href="#" title="">
                       <i class="fa fa-download mail-icon"></i>
                       Archive
                     </a>
-                  </li>
+                  </li> -->
                   <li>
                     <a href="{{URL('hapuspesan',$data->id)}}" class="font-red" title="">
                       <i class="fa fa-trash-o mail-icon"></i>
@@ -100,12 +100,12 @@
                       Reply
                     </a>
                   </li>
-                  <li>
+                  <!-- <li>
                     <a href="#" title="">
                       <i class="fa fa-download mail-icon"></i>
                       Archive
                     </a>
-                  </li>
+                  </li> -->
                   <li>
                     <a href="{{URL('hapuspesan',$datauser->id)}}" class="font-red" title="">
                       <i class="fa fa-trash-o mail-icon"></i>
