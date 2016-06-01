@@ -32,14 +32,19 @@
 				<th>Nama Ruangan</th><th>&nbsp&nbsp:&nbsp&nbsp</th><th>{{$ruang->nama_ruang}} @if($ruang->keterangan) ({{$ruang->keterangan}}) @endif</th>
 			</tr><tr>
 				<th>Kode Ruangan</th><th>&nbsp&nbsp:&nbsp&nbsp</th><th>{{$ruang->kode_ruang}}</th>
-			</tr><tr>
-				<th>Wing/Level</th><th>&nbsp&nbsp:&nbsp&nbsp</th><th>{{$ruang->wing}}/{{$ruang->level}}</th>
 			</tr>
+      @if($ruang->lokasi == "Dramaga")
+      <tr>
+				<th>Wing/Level</th><th>&nbsp&nbsp:&nbsp&nbsp</th><th>{{$ruang->wing}}/{{$ruang->level}}</th>
+			</tr>@endif
 		</table>
 		<!-- <p align="right"><a href="" data-placement="top" data-toggle="modal" data-target="#modalTambah" type="button" data-original-title="Edit" class="btn  btn-sm"><span class="btn btn-success">+ | Tambah Data</span></a></p>	 -->
 		<?php $nama_ruangan = ($ruang->nama_ruang); 
 			$id_ruang = ($ruang->id); 
-      $namaente = Auth::user()->namalengkap;?>
+      $namaente = Auth::user()->namalengkap;
+      $idente = Auth::user()->id;
+      $lokasiente = Auth::user()->lokasi;
+      $namatempat = $ruang->lokasi;?>
 	@endforeach
   <br>
  <!--  <h4><p align="left"><a onclick="history.go(-1);"><span class="btn btn-danger">Kembali</span></a></p></h4> -->
@@ -63,7 +68,8 @@
       @endif
 			<th>Sumber Dana</th>
 			<th>Kondisi</th>
-			<th>Action</th>
+			<th>Status</th>
+      <th>Action</th>
 		</tr>
 		<?php $no=1;
 		$sum=0;?>
@@ -85,11 +91,12 @@
       @endif
 			<td>{{ $data->sumber_dana }}</td>
       <td>{{ $data->kondisi}}</td>
+      <td>@if($data->status){{$data->status}} @else Aktif @endif</td>
 			@if(Auth::user()->hak_akses=="admin")
       
 			<td>
-       <h4><a href="" data-placement="top" data-toggle="modal" data-target="#editbarang{{$data->id}}" type="button" data-original-title="Edit"><span class="label label-primary">Edit..</span></a><br>
-			 <a href="" data-placement="top" data-toggle="modal" data-target="#delete{{$data->id}}" type="button" data-original-title="Delete"><span class="label label-danger">Hapus</a></h4>
+       <h4><a href="" data-placement="top" data-toggle="modal" data-target="#editbarang{{$data->id}}" type="button" data-original-title="Edit"><span class="btn btn-primary">Edit....</span></a><br>
+			 <a href="" data-placement="top" data-toggle="modal" data-target="#delete{{$data->id}}" type="button" data-original-title="Delete"><span class="btn btn-danger">Hapus</a></h4>
       </td>
 			@else
 			<td><!-- <a href="" data-placement="top" data-toggle="modal" data-target="#modalNotif" type="button" data-original-title="Notifikasi" class="btn  btn-sm"><span class="btn btn-success">Kirim Notifikasi</span></a> -->
@@ -116,7 +123,6 @@
 @endsection
 
 @section('modalTambah')
-@foreach($namaruang as $ruang)
     <div class="modal fade fadeIn edit" id="modalTambah" tabindex="-1" role="dialog" aria-labelledby="editLabel">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -127,9 +133,17 @@
         <div class="modal-body">
         <div class="clearfix"></div>
         {!! Form::open(array('url'=>'/prosestambahbarang', 'role'=>'form', 'class="form-horizontal form-label-left"')) !!}
-        	<input type="hidden" name="id_ruangan" class="form-control" value="{{$ruang->id}}">
-          <input type="hidden" name="nama_ruangan" class="form-control" value="{{$ruang->nama_ruang}}">
-          @endforeach
+        	<input type="hidden" name="id_ruangan" class="form-control" value="{{$id_ruang}}">
+          <input type="hidden" name="nama_ruangan" class="form-control" value="{{$nama_ruangan}}">
+          <input type="hidden" name="lokasi" class="form-control" value="{{$namatempat}}">
+          
+          <input type="hidden" name="id" class="form-control" value="{{$data->id}}">
+          <input type="hidden" name="namaruangan" class="form-control" value="{{$nama_ruangan}}">
+          <input type="hidden" name="pengirim" class="form-control" value="{{$namaente}}">
+          <input type="hidden" name="id_pengirim" class="form-control" value="{{$idente}}">
+          <input type="hidden" name="lokasi" class="form-control" value="{{$lokasiente}}">
+          <input type="hidden" name="lokasi" class="form-control" value="{{$namatempat}}">
+          
             <div class="form-group">
             <label class="col-md-4 control-label" align="right">Kode Barang</label>
             <div class="col-md-6">
@@ -225,6 +239,9 @@
           <input type="hidden" name="id" class="form-control" value="{{$data->id}}">
           <input type="hidden" name="namaruangan" class="form-control" value="{{$nama_ruangan}}">
           <input type="hidden" name="pengirim" class="form-control" value="{{$namaente}}">
+          <input type="hidden" name="id_pengirim" class="form-control" value="{{$idente}}">
+          <input type="hidden" name="lokasi" class="form-control" value="{{$lokasiente}}">
+          <input type="hidden" name="lokasi" class="form-control" value="{{$namatempat}}">
             <div class="form-group">
             <label class="col-md-4 control-label" align="right">Kode Barang</label>
             <div class="col-md-6">
@@ -313,7 +330,7 @@
           <h4 class="modal-title" id="deleteLabel">Hapus Data</h4>
         </div>
         <div class="modal-body">
-          <h4>Apakah anda yakin untuk menghapus data barang {{$data->nama_barang}} ?</h4>
+          <h4>Apakah anda yakin untuk menonaktifkan barang {{$data->nama_barang}}? Barang akan dipindahkan ke gudang</h4>
         </div>
         <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Tidak</button>

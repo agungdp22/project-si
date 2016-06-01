@@ -13,7 +13,9 @@
 	$jumlahruangan = DB::table('ruang_dramaga')->count();
 	$jumlahruanganbaranang = DB::table('ruang_baranang')->count();
 	$jumlahstaff = DB::table('login')->where('hak_akses','=','user')->count();
-	$jumlahinventaris = DB::table('listbarang')->count();
+	$jumlahinventaris1 = DB::table('listbarang')->count();
+	$jumlahinventaris2 = DB::table('listbarang2')->count();
+	$jumlahinventaris = $jumlahinventaris1 + $jumlahinventaris2;
 	//$jumlahruangan = $jumlahruangandramaga + $jumlahruanganbaranang;
 	$nomor = 1;
 ?>
@@ -65,18 +67,17 @@
 									<th>RUANGAN</th>
 									<th>LOKASI</th>
 									<th>JUMLAH BARANG</th>
-									<th>ACTION</th>
 								</tr>
 							</thead>
 							@foreach($cukruangan as $listruangan)
 							<tbody>
 								<tr>
-								<?php $jumlahbarangdramaga = DB::table('listbarang')->where('id_ruangan','=',$listruangan->id)->count();?>
+								<?php $jumlahbarangdramaga = DB::table('listbarang')->where('id_ruangan','=',$listruangan->id)->count();
+								$jumlahbarang2 = DB::table('listbarang2')->where('id_ruangan','=',$listruangan->id)->count();?>
 									<th scope="row">{{$nomor++}}</th>
 									<td>{{$listruangan->nama_ruang}}</td>
 									<td>{{$listruangan->lokasi}}</td>
-									<td align="center">{{$jumlahbarangdramaga}}<!-- <i class="fa fa-level-up"></i> --></td>
-									<td><a href="{{URL('lihatruang',$listruangan->id)}}"><span class="label label-success">Lihat</span></a></td>
+									<td align="center">@if($listruangan->lokasi == "Dramaga"){{$jumlahbarangdramaga}} @else {{$jumlahbarang2}} @endif</td>
 									
 								
 								</tr>
@@ -92,10 +93,10 @@
 						<div class="stats-body">
 							<ul class="list-unstyled">
 							@foreach($cukstaff as $liststaff)
-								<li>{{$liststaff->namalengkap}} <span class="pull-right">85%</span>  
-									<div class="progress progress-striped active progress-right">
+								<li>{{$liststaff->namalengkap}} <span class="pull-right">{{$liststaff->lokasi}}</span>  
+									<!-- <div class="progress progress-striped active progress-right">
 										<div class="bar green" style="width:85%;"></div> 
-									</div>
+									</div> -->
 								</li>
 							@endforeach
 								<!-- <li>Firefox <span class="pull-right">35%</span>  

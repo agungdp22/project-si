@@ -5,7 +5,8 @@
 
 @section('content')
 <?php $tole = 1;
-$indeks = 0;?>
+$indeks = 0;
+$indeks2 = 0;?>
 @foreach ($dataruangan as $data)
 <?php
 $idruangan = $data->id;
@@ -19,6 +20,7 @@ if($tole==1)
 <?php
 $idruangan = $data->id;
 $jumlahbarang[$indeks++] = DB::table('listbarang')->where('id_ruangan','=',$idruangan)->count();
+$jumlahbarang2[$indeks2++] = DB::table('listbarang2')->where('id_ruangan','=',$idruangan)->count();
 ?>
 @endforeach
 
@@ -43,23 +45,35 @@ $jumlahbarang[$indeks++] = DB::table('listbarang')->where('id_ruangan','=',$idru
 			<th>Nama Ruangan</th>
       <th>Jumlah Barang</th>
 			<th>Kode Ruang</th>
+      @if($lka!="Baranangsiang")
 			<th>Wing</th>
 			<th>Level</th>
+      @endif
 			<th>Ukuran<br>Panjang (m)</th>
 			<th>Ukuran<br>Lebar (m)</th>
 			<th>Luas</th>
 			<th>Action</th>
 		</tr>
 		<?php $no=1;
-    $ke = 0;?>
+    $ke = 0;
+    $arrairuang[] = $lka;?>
 		@foreach ($dataruangan as $data)
+    <?php $edd = $data->id;
+    $tempat[$lka] = $edd;
+    ?>
 		<tr>
 			<td>{{ $no++ }}</td>
-			<td>{{ $data->nama_ruang }}&nbsp&nbsp&nbsp<h4><a href="lihatruang/{{$data->id}}"><span class="label label-success">Lihat</span></a></h4></td>
+			<td>{{ $data->nama_ruang }}&nbsp&nbsp&nbsp<h4><a href="lihatruang/{{$lka}}/{{$edd}}"><span class="label label-success">Lihat</span></a></h4></td>
+      @if($lka=="Dramaga")
       <td>{{ $jumlahbarang[$ke++] }}</td>
+      @else
+      <td>{{ $jumlahbarang2[$ke++] }}</td>
+      @endif
 			<td>{{ $data->kode_ruang }}</td>
+      @if($lka!="Baranangsiang")
 			<td>{{ $data->wing }}</td>
 			<td>{{ $data->level }}</td>
+      @endif
 			<td>{{ $data->ukuran_panjang }}</td>
 			<td>{{ $data->ukuran_lebar }}</td>
 			<td>{{ $data->luas }}</td>
@@ -183,6 +197,7 @@ $jumlahbarang[$indeks++] = DB::table('listbarang')->where('id_ruangan','=',$idru
             </div>
           </div>
           <div class="clearfix"></div>
+          @if($lka!="Baranangsiang")
           <div class="form-group">
             <label class="col-md-4 control-label" align="right">Wing</label>
             <div class="col-md-6">
@@ -197,6 +212,7 @@ $jumlahbarang[$indeks++] = DB::table('listbarang')->where('id_ruangan','=',$idru
                 </div>
             </div>
           <div class="clearfix"></div>
+          @endif
           <div class="form-group">
                 <label class="col-md-4 control-label" align="right">Panjang</label>
                 <div class="col-md-6">
@@ -265,7 +281,7 @@ $jumlahbarang[$indeks++] = DB::table('listbarang')->where('id_ruangan','=',$idru
         <input type="hidden" name="namapengirim" value="{{Auth::user()->namalengkap}}" class="form-control">
         <input type="hidden" name="penerima" value="Admin" class="form-control">
         <input type="hidden" name="status" value="1" class="form-control">
-        <input type="hidden" name="lokasiruangan" value="Dramaga" class="form-control">
+        <input type="hidden" name="lokasiruangan" value="{{Auth::user()->lokasi}}" class="form-control">
         <input type="hidden" name="tipe" value="admin" class="form-control">
           <div class="form-group">
             <label class="col-md-2 control-label" align="right">Pesan</label>

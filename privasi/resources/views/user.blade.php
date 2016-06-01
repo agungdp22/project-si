@@ -9,8 +9,8 @@
     <div class="content">
         <div class="title">Selamat Datang {{Auth::user()->namalengkap}}</div>
         <br/>
-        <a href="read"><span class="btn btn-success">Lihat Data</span></a><br><br>
-		<a href="logout"><span class="btn btn-danger">cdfsd</span></a><br>
+        Wilayah kerja anda di {{Auth::user()->lokasi}}
+        <!-- <a href="read"><span class="btn btn-success">Lihat Data</span></a><br><br> -->
         </div>
 </div>
 

@@ -30,15 +30,31 @@ class Notifikasicontroller extends Controller{
 		return back()->with('message','Berhasil Mengirim Pesan');
 	}
 
-	public function lihatsemuapesan(){
-		// $updatenotif = array('status' => 0);
-		$data = DB::table('pesan')->where('tipe','=','admin')->orderby('status','desc')->orderby('id','desc')->get();
-		$datauser = DB::table('pesan')->where('tipe','=','user')->where('penerima','=',Auth::user()->namalengkap)->orderby('status','desc')->orderby('id','desc')->get();
-		return View::make('pesan')->with('pesanadmin',$data)->with('pesanuser',$datauser);
+	public function lihatsemuapesan($tipe){
+		$sesi = Auth::user()->hak_akses;
+		if($sesi == "admin"){
+			$data = DB::table('pesan')->where('tipe','=',$sesi)->orderby('status','desc')->orderby('id','desc')->paginate(5);
+		 }
+		else if($sesi == "user"){
+			$data = DB::table('pesan')->where('tipe','=',$sesi)->where('penerima','=',Auth::user()->namalengkap)->orderby('status','desc')->orderby('id','desc')->paginate(5);
+		}
+		return View::make('pesan')->with('pesan',$data);
 	}
 
-	public function deletepesan($id){
-		DB::table('pesan')->where('id','=',$id)->delete();
+	public function search(){
+		$var = Input::get('cari');
+		$searchTerms = explode(' ', $var);
+	    $query = DB::table('listbarang');
+	    foreach($searchTerms as $term)
+	    {
+	        $query->where('name', 'LIKE', '%'. $term .'%');
+	    }
+	    $results = $query->get();
+	    return View::make('hasilcari')->with('',$results);
+	}
+
+	public function deletenotif($id){
+		DB::table('notif')->where('id','=',$id)->delete();
 		return back();
 	}
 
@@ -48,7 +64,7 @@ class Notifikasicontroller extends Controller{
 	}
 
 	public function notif(){
-		$data = DB::table('pesan')->get();
+		$data = DB::table('notif')->orderby('id','desc')->paginate(5);
 		return View::make('notifikasi')->with('notif',$data);
 	}
 }

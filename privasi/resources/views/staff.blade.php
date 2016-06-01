@@ -31,7 +31,7 @@
 			<td>{{$data->namalengkap}}</td>
 			<td>{{$data->email}}</td>
 			<td>{{$data->username}}</td>
-      <td>Dramaga</td>
+      <td>{{$data->lokasi}}</td>
       <td><a href="" data-placement="top" data-toggle="modal" data-target="#delete{{$data->id}}" type="button" data-original-title="Delete" class="btn  btn-sm tooltips"><span class="btn btn-danger">Hapus</span></a></td>
 		</tr>
 		@endforeach

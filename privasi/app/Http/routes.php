@@ -120,19 +120,18 @@ Route::get('user',function(){
 		return view('login');
 	}
 });
-Route::get('search','Caricontroller@search');
+Route::post('search','Notifikasicontroller@search');
 
 //modul crud barang inventaris
 Route::get('ruangan/{lokasi}','Ruangcontroller@lihatdataruangan');
 Route::get('lihatbarang','Ruangcontroller@barangthdtempat');
-Route::get('ruangan/lihatruang/{id}','Ruangcontroller@ndelokruangan');
+Route::get('ruangan/lihatruang/{tempat}/{id}','Ruangcontroller@ndelokruangan');
 Route::get('lihatruang/editbarang/{id}','Ruangcontroller@ngeditbarang');
 Route::post('proseseditbrg','Ruangcontroller@prosesngeditbarang');
 Route::post('prosestambahruangan', 'Ruangcontroller@prosestambahruangan');
 Route::post('prosestambahbarang','Ruangcontroller@tambahbarang');
 Route::get('hapusbarang/{id}','Ruangcontroller@hapusbarang');
 Route::get('hapusruangan/{id}','Ruangcontroller@hapusruangan');
-Route::get('lihatruangajax/{id}','Ruangcontroller@lihatpakeajax');
 Route::get('barang/{status}','Ruangcontroller@getallbarangaktif');
 Route::get('exportexcel/{id}','Ruangcontroller@exportexcel');
 //end modul barang
@@ -143,9 +142,12 @@ Route::get('hapusstaff/{id}','Crudcontroller@hapusstaff');
 Route::get('kirimnotif/barang/{id}','Notifikasicontroller@notifikasibarang');
 Route::post('proseskirimpesan','Notifikasicontroller@ruanganpesan');
 Route::post('kirimpesandariadmin','Notifikasicontroller@ruanganpesan');
-Route::get('pesanmasuk','Notifikasicontroller@lihatsemuapesan');
-Route::get('pesankeluar','Notifikasicontroller@lihatsemuapesan');
+Route::get('pesan/{tipe}','Notifikasicontroller@lihatsemuapesan');
 Route::get('hapuspesan/{id}','Notifikasicontroller@hapuspesan');
 Route::get('notifikasi','Notifikasicontroller@notif');
+Route::get('notif/{nama}/{ruangan}','Caricontroller@lihatnotif');
+Route::get('deletenotif/{id}','Notifikasicontroller@deletenotif');
+
+Route::get('hasil', 'Caricontroller@getName');
 
 Route::get('logout','Crudcontroller@logout');

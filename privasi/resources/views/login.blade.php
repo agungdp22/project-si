@@ -3,9 +3,7 @@
 	Login
 @endsection
 
-<style type="text/css">
-	body { background: url(assets/janux/img/bg-login.jpg) !important; }
-</style>
+
 @section('content')
 
 			<div class="main-page login-page ">

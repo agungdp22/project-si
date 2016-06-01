@@ -8,33 +8,26 @@
 	  <div id="page-wrapper">
       <div class="main-page">
         <h3 class="title1">Pemberitahuan</h3>
-        <!-- <div class="inbox-page">
-          <h4>Today</h4>
-
-        </div> -->
-        <div class="bs-example widget-shadow" data-example-id="contextual-table"> 
-            <h4>Colored Rows Table:</h4>
-            <table class="table"> <thead> <tr> 
-            <th>#</th> 
-            <th>Column heading</th> 
-            <th>Column heading</th> 
-            <th>Column heading</th> </tr> </thead> 
-            <tbody> <tr class="active"> 
-            <th scope="row">1</th> 
-            <td>Column content</td> 
-            <td>Column content</td> 
-            <td>Column content</td> </tr> 
-            <tr> <th scope="row">2</th> 
-            <td>Column content</td> 
-            <td>Column content</td> 
-            <td>Column content</td> </tr> 
-            <tr class="success"> 
-            <th scope="row">3</th> 
-            <td>Column content</td> 
-            <td>Column content</td> 
-            <td>Column content</td> </tr> 
-            <tr> <th scope="row">4</th> <td>Column content</td> <td>Column content</td> <td>Column content</td> </tr> <tr class="info"> <th scope="row">5</th> <td>Column content</td> <td>Column content</td> <td>Column content</td> </tr> <tr> <th scope="row">6</th> <td>Column content</td> <td>Column content</td> <td>Column content</td> </tr> <tr class="warning"> <th scope="row">7</th> <td>Column content</td> <td>Column content</td> <td>Column content</td> </tr> <tr> <th scope="row">8</th> <td>Column content</td> <td>Column content</td> <td>Column content</td> </tr> <tr class="danger"> <th scope="row">9</th> <td>Column content</td> <td>Column content</td> <td>Column content</td> </tr> </tbody> </table> 
+<?php $namaente = Auth::user()->namalengkap; ?>
+        <div class="grid_3 grid_5 widget-shadow">
+        @if($notif)
+          @foreach($notif as $data)
+          <div class="well">
+            @if($namaente == $data->pengirim) Anda @else {{$data->pengirim}} @endif telah {{$data->isinotif}} "<b><a href="notif/{{$data->barang}}/{{$data->ruangan}}">{{$data->barang}}</a></b>" di ruangan "<b>{{$data->ruangan}}</b>" [{{$data->lokasi}}]&nbsp
+            <h4 align="left>"><a href="{{URL('deletenotif',$data->id)}}" class="font-red" title="">
+                      <i class="fa fa-trash-o mail-icon"></i>
+                      Delete
+                    </a></h4>
           </div>
+          @endforeach
+          {!! $notif->render() !!}
+        @else
+        Tidak ada pemberitahuan
+        @endif
+        </div>
+            <?php $cekkk = array('status'=>0);
+            DB::table('notif')->update($cekkk);
+            ?>
       </div>
     </div>
 @endsection

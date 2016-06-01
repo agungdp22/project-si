@@ -4,23 +4,24 @@
 @endsection
 
 @section('content')
-<script type="text/javascript" language="JavaScript">
-	 function konfirmasi()
-	 {
-	 tanya = confirm("Anda Yakin Akan Menghapus Data?");
-	 if (tanya == true) return true;
-	 else return false;
-	 }
- </script>
 <?php
 	function format_rupiah($angka){
 	 $rupiah=number_format($angka,0,',','.');
 	 return $rupiah;
 	}
 ?>
+@foreach($barang as $data)
+<?php $sst = $data->status;
+?>
+@endforeach
+<?php
+	if($sst == "Tidak Aktif") {$sst = "Tidak Aktif";}
+	else {$sst = "Aktif";}?>
+
 @if(Auth::user())
 <div id="page-wrapper">
 	<div class="main-page">
+  <h3>Barang {{$sst}}</h3><br>
 	<!-- @if(Session::has('message'))
 	<span class="label label-success">{{ Session::get('message') }}</span>
 	@endif -->
@@ -31,19 +32,19 @@
 			<th>No</th>
 			<th>Kode Barang</th>
 			<th>Nama Barang</th>
+			<th>Asal Ruangan</th>
 			<th>Merk</th>
 			<th>Tahun Perolehan</th>
       @if(Auth::user()->hak_akses=="admin")
 			<th>Harga (Rupiah)</th>
       @endif
 			<th>Jumlah</th>
-			<th>Satuan</th>
       @if(Auth::user()->hak_akses=="admin")
 			<th>Total (Rupiah)</th>
       @endif
 			<th>Sumber Dana</th>
 			<th>Kondisi</th>
-			<th>Action</th>
+			<th>Status</th>
 		</tr>
 		<?php $no=1;
 		$sum=0;?>
@@ -54,28 +55,19 @@
 			<td>{{ $no++ }}</td>
 			<td>{{ $data->kode_barang }}</td>
 			<td>{{ $data->nama_barang }}</td>
+			<td>{{ $data->nama_ruangan }}</td>
 			<td>{{ $data->merk }}</td>
 			<td>{{ $data->tahun_perolehan }}</td>
       @if(Auth::user()->hak_akses=="admin")
 			<td>{{ format_rupiah($data->harga) }}</td>
       @endif
-			<td>{{ $data->jumlah }}</td>
-			<td>{{ $data->satuan }}</td>
+			<td>{{ $data->jumlah }} &nbsp{{ $data->satuan }}</td>
       @if(Auth::user()->hak_akses=="admin")
 			<td>{{ format_rupiah($ttl) }}</td>
       @endif
 			<td>{{ $data->sumber_dana }}</td>
       <td>{{ $data->kondisi}}</td>
-			@if(Auth::user()->hak_akses=="admin")
-      
-			<td>			
-				<a href="" data-placement="top" data-toggle="modal" data-target="#editbarang{{$data->id}}" type="button" data-original-title="Edit" class="btn  btn-sm"><i class="fa fa-pencil">&nbsp</i>Edit....</a><br>
-        <a href="" data-placement="top" data-toggle="modal" data-target="#delete{{$data->id}}" type="button" data-original-title="Delete" class="btn  btn-sm tooltips"><i class="fa fa-trash-o">&nbsp</i>Hapus</a>
-        	</td>
-			@else
-			<td><!-- <a href="" data-placement="top" data-toggle="modal" data-target="#modalNotif" type="button" data-original-title="Notifikasi" class="btn  btn-sm"><span class="btn btn-success">Kirim Notifikasi</span></a> -->
-      <a href="" data-placement="top" data-toggle="modal" data-target="#editbarang{{$data->id}}" type="button" data-original-title="Edit" class="btn  btn-sm"><span class="btn btn-success">Edit..</span></a><br></td>
-			@endif
+      <td>@if($data->status){{$data->status}} @else Aktif @endif</td>
 		</tr>
 		<?php $sum=$sum+$ttl;?>
 		@endforeach
@@ -83,14 +75,17 @@
 		  <tr><td colspan="11" align="center"><h3><span class="label label-danger">TIDAK ADA DATA</span></h3></td></tr>
 		@endif
 	</table>
-	<div><?php echo paginate_one($reload, $page, $tpages); ?></div>
+
   @if(Auth::user()->hak_akses=="admin")
+  <h3 align="right">
   @if($sum>10000000)
 	<span class="btn btn-danger">Total Anggaran = Rp <?php echo format_rupiah($sum);?></span><br><br>
   @else
   <span class="btn btn-success">Total Anggaran = Rp <?php echo format_rupiah($sum);?></span><br><br>
   @endif
+  </h3>
   @endif
+{!! $barang->render() !!}
 		
 @endif
 </div>

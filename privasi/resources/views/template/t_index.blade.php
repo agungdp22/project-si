@@ -42,7 +42,9 @@
 		$jumlahpesanadmin = count($isipesanadmin);
 		$isipesanuser = DB::table('pesan')->where('status','=',1)->where('tipe','=','user')->orderby('id','desc')->get();
 		if(Auth::user()){
-		$jpu = count(DB::table('pesan')->where('tipe','=','user')->where('penerima','=',Auth::user()->namalengkap)->get());}
+			$jpu = count(DB::table('pesan')->where('tipe','=','user')->where('penerima','=',Auth::user()->namalengkap)->get());
+			$isipesanuser = DB::table('pesan')->where('status','=',1)->where('tipe','=','user')->orderby('id','desc')->where('penerima','=',Auth::user()->namalengkap)->get();
+		}
 		$jumlahpesanuser = count($isipesanuser);
 		$cuk = $isipesanadmin;
 		$cukk = $isipesanuser;
@@ -93,12 +95,16 @@
 						<li>
 							<a href="#"><i class="fa fa-th-large nav_icon"></i>Lihat Ruangan <!-- <span class="nav-badge">12</span> --> <span class="fa arrow"></span></a>
 							<ul class="nav nav-second-level collapse">
+							@if(Auth::user()->lokasi == "Dramaga" || Auth::user()->hak_akses == "admin")
 								<li>
 									<a href="{{URL('ruangan',"Dramaga")}}">Dramaga</a>
 								</li>
+								@endif
+							@if(Auth::user()->lokasi == "Baranangsiang" || Auth::user()->hak_akses == "admin")
 								<li>
 									<a href="{{URL('ruangan',"Baranangsiang")}}">Baranangsiang</a>
 								</li>
+								@endif
 							</ul>
 						</li>
 						<li>
@@ -108,10 +114,7 @@
 									<a href="{{URL('barang',"aktif")}}">Aktif</a>
 								</li>
 								<li>
-									<a href="{{URL('barang',"tidakaktif")}}">Siap Dihapus</a>
-								</li>
-								<li>
-									<a href="{{URL('barang',"tidakaktif")}}">Sudah di Rektorat</a>
+									<a href="{{URL('barang',"tidakaktif")}}">Tidak Aktif</a>
 								</li>
 							</ul>
 						</li>
@@ -120,15 +123,8 @@
 							
 						</li>
 						<li>
-							<a href="#"><i class="fa fa-envelope nav_icon"></i>Pesan<span class="fa arrow"></span></a>
-							<ul class="nav nav-second-level collapse">
-								<li>
-									<a href="{{URL('pesanmasuk')}}">Masuk &nbsp[@if(Auth::user()->hak_akses=="admin"){{$jpa}}@else{{$jpu}}@endif]</a>
-								</li>
-								<li>
-									<a href="{{URL('pesankeluar')}}">Keluar</a>
-								</li>
-							</ul>
+							<a href="{{URL('pesan',"masuk")}}"><i class="fa fa-envelope nav_icon"></i>Pesan&nbsp[@if(Auth::user()->hak_akses=="admin"){{$jpa}}@else{{$jpu}}@endif]</a>
+							
 						</li>
 						@if(Auth::user()->hak_akses=="admin")
 						<li>
@@ -153,21 +149,23 @@
 				</div>
 
 				<div class="search-box">
-					<form class="input">
-						<input class="sb-search-input input__field--madoka" placeholder="Search..." type="search" id="input-31" />
+
+					 <form action="{{url('/hasil')}}" action="GET">
+						<input name="cari" class="sb-search-input input__field--madoka" placeholder="Search..." type="search" id="input-31" />
 						<label class="input__label" for="input-31">
 							<svg class="graphic" width="100%" height="100%" viewBox="0 0 404 77" preserveAspectRatio="none">
 								<path d="m0,0l404,0l0,77l-404,0l0,-77z"/>
 							</svg>
 						</label>
 					</form>
+
 				</div>
 				<div class="clearfix"> </div>
 			</div>
 			<div class="header-right">
 				<div class="profile_details_left">
 					<ul class="nofitications-dropdown">
-										
+					<!-- notifikasi -->
 						@if((Auth::user()->hak_akses=="admin") && $adanotif)
 						<li class="dropdown head-dpdn">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-bell"><span class="badge blue">{{$adanotif}}</span></i></a>
@@ -189,7 +187,7 @@
 							@endforeach
 								 <li>
 									<div class="notification_bottom">
-										<a href="#">See all notifications</a>
+										<a href="notifikasi">See all notifications</a>
 									</div> 
 								</li>
 							</ul>
@@ -206,13 +204,14 @@
 								
 								 <li>
 									<div class="notification_bottom">
-										<a href="#">See all notifications</a>
+										<a href="{{URL('notifikasi')}}">See all notifications</a>
 									</div> 
 								</li>
 							</ul>
 						</li>
 						@endif
 						
+						<!-- pesan -->
 						@if(Auth::user()->hak_akses=="admin")
 						<!--(for admin)-->
 						<li class="dropdown head-dpdn">
@@ -235,7 +234,7 @@
 								@endforeach
 								<li>
 									<div class="notification_bottom">
-										<a href="{{URL('pesanmasuk')}}">See all messages</a>
+										<a href="{{URL('pesan',"masuk")}}">See all messages</a>
 									</div> 
 								</li>
 							</ul>
@@ -269,9 +268,9 @@
 						</li>
 						@endif
 
-						@if(Auth::user()->hak_akses=="admin")
+						<!-- @if(Auth::user()->hak_akses=="admin")
 						<li class="dropdown head-dpdn">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-tasks"></i><!-- <span class="badge blue1">15</span> --></a>
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-tasks"></i></a>
 							<ul class="dropdown-menu">
 								<li>
 									<div class="notification_header">
@@ -294,7 +293,7 @@
 								</li>
 							</ul>
 						</li>
-						@endif	
+						@endif	 -->
 					</ul>
 					<div class="clearfix"> </div>
 				</div>
@@ -322,8 +321,8 @@
 								</div>	
 							</a>
 							<ul class="dropdown-menu drp-mnu">
-								<li> <a href="#"><i class="fa fa-cog"></i> Settings</a> </li> 
-								<li> <a href="#"><i class="fa fa-user"></i> Profile</a> </li> 
+								<!-- <li> <a href="#"><i class="fa fa-cog"></i> Settings</a> </li> 
+								<li> <a href="#"><i class="fa fa-user"></i> Profile</a> </li>  -->
 								<li> <a href="{{URL('logout')}}"><i class="fa fa-sign-out"></i> Logout</a> </li>
 							</ul>
 						</li>
@@ -362,7 +361,7 @@
 	<script src="{{URL('assets/template/js/scripts.js')}}"></script>
    	<script src="{{URL('assets/template/js/bootstrap.js')}}"> </script>
 
-   	@yield('tampilkandata')
+
 	
 </body>
 @yield('modalTambah')
