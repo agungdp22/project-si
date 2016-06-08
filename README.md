@@ -1,3 +1,3 @@
-# project-si
+# Project Sistem informasi
 Project mata kuliah Sistem Informasi, pake framework laravel
-(masih belum beres)
+(insya allah bberes)
